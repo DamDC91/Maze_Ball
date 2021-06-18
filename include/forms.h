@@ -28,17 +28,18 @@ protected:
     Color col;
     Animation anim;
 public:
-    Animation& getAnim() {return anim;}
-    void setAnim(Animation ani) {anim = ani;}
+    Animation &getAnim() { return anim; }
+
+    void setAnim(Animation ani) { anim = ani; }
+
     // This method should update the anim object with the corresponding physical model
     // It has to be done in each inherited class, otherwise all forms will have the same movements !
     // Virtual method for dynamic function call
     // Pure virtual to ensure all objects have their physics implemented
     virtual void update(double delta_t) = 0;
+
     // Virtual method : Form is a generic type, only setting color and reference position
     virtual void render();
 };
-
-
 
 #endif // FORMS_H_INCLUDED

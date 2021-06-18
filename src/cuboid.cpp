@@ -40,7 +40,7 @@ void Cuboid::update(double delta_t)
 
 void Cuboid::render()
 {
-    for(int i=0;i<6;i++)
+    for (int i = 0; i < 6; i++)
     {
         glPushMatrix();
         faces[i]->render();

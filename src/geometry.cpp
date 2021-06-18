@@ -57,7 +57,7 @@ double distance(Point p1, Point p2)
 
 
 // Overloaded standard operators
-std::ostream& operator<<(std::ostream& os, const Coordinates& coord)
+std::ostream &operator<<(std::ostream &os, const Coordinates &coord)
 {
     os << '(' << coord.x << ", " << coord.y << ", " << coord.z << ')';
     return os;

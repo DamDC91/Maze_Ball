@@ -16,17 +16,27 @@ public:
               Vector accel = Vector(0.0, 0.0, 0.0),
               Vector speed = Vector(0.0, 0.0, 0.0),
               Point p = Point(0.0, 0.0, 0.0)
-              );
-    double getPhi() const {return phi;}
-    double getTheta() const {return theta;}
-    void setPhi(double agl) {phi = agl;}
-    void setTheta(double agl) {theta = agl;}
-    Vector getAccel() const {return acc;}
-    Vector getSpeed() const {return spd;}
-    void setAccel(Vector vect) {acc = vect;}
-    void setSpeed(Vector vect) {spd = vect;}
-    Point getPos() const {return pos;}
-    void setPos(Point pt) {pos = pt;}
+    );
+
+    double getPhi() const { return phi; }
+
+    double getTheta() const { return theta; }
+
+    void setPhi(double agl) { phi = agl; }
+
+    void setTheta(double agl) { theta = agl; }
+
+    Vector getAccel() const { return acc; }
+
+    Vector getSpeed() const { return spd; }
+
+    void setAccel(Vector vect) { acc = vect; }
+
+    void setSpeed(Vector vect) { spd = vect; }
+
+    Point getPos() const { return pos; }
+
+    void setPos(Point pt) { pos = pt; }
 };
 
 

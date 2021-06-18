@@ -1,10 +1,6 @@
-#include <cmath>
-#include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
-#include "forms.h"
 #include "cube_face.h"
 
-#include <iostream>
 
 Cube_face::Cube_face(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 {
@@ -25,7 +21,6 @@ void Cube_face::update(double delta_t)
 
 void Cube_face::render()
 {
-
     Point p1 = Point();
     Point p2 = p1, p3, p4 = p1;
     p2.translate(length * vdir1);
@@ -43,4 +38,35 @@ void Cube_face::render()
         glVertex3d(p4.x, p4.y, p4.z);
     }
     glEnd();
+}
+
+bool Cube_face::collisionSphere(Point sph_pos, double radius, Vector floor_normal)
+{
+    Vector horizontal; // horizontal face direction
+    Vector vertical; // vertical face direction
+
+    if (floor_normal * this->vdir1 < 1e-6)
+    { // vdir1 orthogonal to the floor <-> vdir1 = horizontal direction
+        horizontal = this->vdir1;
+        vertical = this->vdir2;
+    }
+    else
+    {
+        horizontal = this->vdir2;
+        vertical = this->vdir1;
+    }
+
+    Point face_h1 = this->anim.getPos();
+    Point face_h2 = {face_h1.x + horizontal.x, face_h1.y + this->vdir1.y, face_h1.z + this->vdir1.z};
+
+    Vector h1_to_sph = Vector(face_h1, sph_pos);
+    Vector h2_to_sph = Vector(face_h2, sph_pos);
+    Vector face_normal = horizontal ^vertical; // normalized because vdir1 and vdir2 are normalized
+
+    double a = h1_to_sph * horizontal; // algebraic distance
+    bool collides_face = std::abs(h1_to_sph * face_normal) <= radius && (a > 0 && a <= this->length);
+    bool collides_h1 = std::abs((h1_to_sph ^ vertical) * (1.0 / vertical.norm())) <= radius;
+    bool collides_h2 = std::abs((h2_to_sph ^ vertical) * (1.0 / vertical.norm())) <= radius;
+
+    return collides_face || collides_h1 || collides_h2;
 }

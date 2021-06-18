@@ -17,14 +17,15 @@
 /* Constants and functions declarations                                    */
 /***************************************************************************/
 // Screen dimension constants
-const int SCREEN_WIDTH = 640*2;
-const int SCREEN_HEIGHT = 480*2;
+const int SCREEN_WIDTH = 640 * 2;
+const int SCREEN_HEIGHT = 480 * 2;
 
 // Max number of forms : static allocation
 const int MAX_FORMS_NUMBER = 10;
 
 // Animation actualization delay (in ms) => 100 updates per second
 const Uint32 ANIM_DELAY = 10;
+
 
 // Starts up SDL, creates window, and initializes OpenGL
 bool init(SDL_Window **window, SDL_GLContext *context);
@@ -40,6 +41,7 @@ void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos);
 
 // Frees media and shuts down SDL
 void close(SDL_Window **window);
+
 
 /***************************************************************************/
 /* Functions implementations                                               */
@@ -62,7 +64,8 @@ bool init(SDL_Window **window, SDL_GLContext *context)
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
         // Create window
-        *window = SDL_CreateWindow("TP intro OpenGL / SDL 2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+        *window = SDL_CreateWindow("TP intro OpenGL / SDL 2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                   SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
         if (*window == NULL)
         {
             std::cout << "Window could not be created! SDL Error: " << SDL_GetError() << std::endl;
@@ -98,6 +101,7 @@ bool init(SDL_Window **window, SDL_GLContext *context)
     return success;
 }
 
+
 bool initGL()
 {
     bool success = true;
@@ -111,7 +115,8 @@ bool initGL()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Fix aspect ratio and depth clipping planes
-    gluPerspective(40.0, (GLdouble)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
+    gluPerspective(40.0, (GLdouble) SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
+
 
     // Initialize Modelview Matrix
     glMatrixMode(GL_MODELVIEW);
@@ -122,6 +127,7 @@ bool initGL()
 
     // Activate Z-Buffer
     glEnable(GL_DEPTH_TEST);
+
 
     // Lighting basic configuration and activation
     const GLfloat light_ambient[] = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -149,6 +155,7 @@ bool initGL()
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
 
     // Check for error
     error = glGetError();
@@ -183,11 +190,12 @@ void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos, float angle 
 
     // Set the camera position and parameters
     gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
     // Isometric view
     glRotated(-45, 0, 1, 0);
     glRotated(30, 1, 0, -1);
 
-    glRotated(angle, 0,1,0);
+    glRotated(angle, 0, 1, 0);
 
     // X, Y and Z axis
     glPushMatrix(); // Preserve the camera viewing point for further forms
@@ -228,6 +236,7 @@ void close(SDL_Window **window)
     SDL_Quit();
 }
 
+
 /***************************************************************************/
 /* MAIN Function                                                           */
 /***************************************************************************/
@@ -238,6 +247,7 @@ int main(int argc, char *args[])
 
     // OpenGL context
     SDL_GLContext gContext;
+
 
     // Start up SDL and create window
     if (!init(&gWindow, &gContext))
@@ -303,34 +313,34 @@ int main(int argc, char *args[])
 
                 switch (event.type)
                 {
-                // User requests quit
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-                case SDL_KEYDOWN:
-                    // Handle key pressed with current mouse position
-                    SDL_GetMouseState(&x, &y);
-
-                    switch (key_pressed)
-                    {
-                    // Quit the program when 'q' or Escape keys are pressed
-                    case SDLK_q:
-                    case SDLK_ESCAPE:
+                    // User requests quit
+                    case SDL_QUIT:
                         quit = true;
                         break;
-                    case SDLK_o:
-                        camera_position.y += 0.3;
-                        break;
-                    case SDLK_p:
-                        camera_position.y -= 0.3;
-                        break;
+                    case SDL_KEYDOWN:
+                        // Handle key pressed with current mouse position
+                        SDL_GetMouseState(&x, &y);
 
+                        switch (key_pressed)
+                        {
+                            // Quit the program when 'q' or Escape keys are pressed
+                            case SDLK_q:
+                            case SDLK_ESCAPE:
+                                quit = true;
+                                break;
+                            case SDLK_o:
+                                camera_position.y += 0.3;
+                                break;
+                            case SDLK_p:
+                                camera_position.y -= 0.3;
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
-                    }
-                    break;
-                default:
-                    break;
                 }
             }
 
