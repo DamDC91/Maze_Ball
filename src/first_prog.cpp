@@ -11,13 +11,14 @@
 #include "forms.h"
 #include "sphere.h"
 #include "cube_face.h"
+#include "cuboid.h"
 
 /***************************************************************************/
 /* Constants and functions declarations                                    */
 /***************************************************************************/
 // Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 640*2;
+const int SCREEN_HEIGHT = 480*2;
 
 // Max number of forms : static allocation
 const int MAX_FORMS_NUMBER = 10;
@@ -183,8 +184,10 @@ void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos, float angle 
     // Set the camera position and parameters
     gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     // Isometric view
-    glRotated(-45 + angle, 0, 1, 0);
+    glRotated(-45, 0, 1, 0);
     glRotated(30, 1, 0, -1);
+
+    glRotated(angle, 0,1,0);
 
     // X, Y and Z axis
     glPushMatrix(); // Preserve the camera viewing point for further forms
@@ -251,7 +254,7 @@ int main(int argc, char *args[])
         SDL_Event event;
 
         // Camera position
-        Point camera_position(0, 0.0, 5.0);
+        Point camera_position(0, 0.0, 8.0);
 
         // The forms to render
         Form *forms_list[MAX_FORMS_NUMBER];
@@ -260,42 +263,24 @@ int main(int argc, char *args[])
         {
             forms_list[i] = NULL;
         }
-        // Create here specific forms and add them to the list...
-        // Don't forget to update the actual number_of_forms !
-        Cube_face *Front_Face = new Cube_face(Vector(1, 0, 0), Vector(0, 1, 0), Point(0, 0, 0.5), 0.5, 0.5, RED);
-        Cube_face *Right_Face = new Cube_face(Vector(0, 1, 0), Vector(0, 0, 1), Point(0.5, 0, 0), 0.5, 0.5, YELLOW);
-        Cube_face *Top_Face = new Cube_face(Vector(1, 0, 0), Vector(0, 0, 1), Point(0, 0.5, 0), 0.5, 0.5, GREEN);
 
-        Cube_face *Back_Face = new Cube_face(Vector(1, 0, 0), Vector(0, 1, 0), Point(0, 0, 0), 0.5, 0.5, ORANGE);
-        Cube_face *Left_Face = new Cube_face(Vector(0, 1, 0), Vector(0, 0, 1), Point(0, 0, 0), 0.5, 0.5, WHITE);
-        Cube_face *Bot_Face = new Cube_face(Vector(1, 0, 0), Vector(0, 0, 1), Point(0, 0, 0), 0.5, 0.5, BLUE);
 
-        forms_list[number_of_forms] = Front_Face;
-        number_of_forms++;
-        forms_list[number_of_forms] = Right_Face;
-        number_of_forms++;
-        forms_list[number_of_forms] = Top_Face;
+        Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5, 0.5, 5, Vector(1, 0, 0), Vector(0, 1, 0), RED);
+        forms_list[number_of_forms] = sol;
         number_of_forms++;
 
-        forms_list[number_of_forms] = Back_Face;
-        number_of_forms++;
-        forms_list[number_of_forms] = Left_Face;
-        number_of_forms++;
-        forms_list[number_of_forms] = Bot_Face;
-        number_of_forms++;
+        Cuboid *mur1 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1, 0.3, 5, Vector(1, 0, 0), Vector(0, 1, 0), BLUE);
+        Cuboid *mur2 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.3, 0.1, 5, Vector(0, 1, 0), Vector(0, 0, -1), BLUE);
 
-        Sphere *s = new Sphere(0.1, RED);
-        Animation anim = s->getAnim();
-        anim.setPos(Point(1.0, 0.0, 0.0));
-        s->setAnim(anim);
-        forms_list[number_of_forms] = s;
+        Cuboid *mur3 = new Cuboid(Point(2.5, 0.25, -2.5), 0.1, 0.3, 5, Vector(-1, 0, 0), Vector(0, 1, 0), BLUE);
+        Cuboid *mur4 = new Cuboid(Point(2.5, 0.25, -2.5), 0.3, 0.1, 5, Vector(0, 1, 0), Vector(0, 0, 1), BLUE);
+        forms_list[number_of_forms] = mur1;
         number_of_forms++;
-
-        Sphere *s2 = new Sphere(0.1, BLUE);
-        anim = s2->getAnim();
-        anim.setPos(Point(0.0, 1.0, 0.0));
-        s2->setAnim(anim);
-        forms_list[number_of_forms] = s2;
+        forms_list[number_of_forms] = mur2;
+        number_of_forms++;
+        forms_list[number_of_forms] = mur3;
+        number_of_forms++;
+        forms_list[number_of_forms] = mur4;
         number_of_forms++;
 
         float angle = 0.0;
@@ -305,7 +290,7 @@ int main(int argc, char *args[])
         // While application is running
         while (!quit)
         {
-           // angle += 0.5;
+              angle += 0.04;
 
             // Handle events on queue
             while (SDL_PollEvent(&event) != 0)
