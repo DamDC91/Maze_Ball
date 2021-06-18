@@ -14,7 +14,7 @@ private:
         Back = 2,
         Left = 3,
         Top = 4,
-        Bot = 5
+        Bottom = 5
     };
     Point center;
     Point origin;

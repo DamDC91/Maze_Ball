@@ -23,7 +23,7 @@ Cuboid::Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2, Vector c_
 
     faces[Left] = new CubeFace(face_dir2, face_dir3, org, heigth, depth, color);
 
-    faces[Bot] = new CubeFace(face_dir3, face_dir1, org, depth, width, color);
+    faces[Bottom] = new CubeFace(face_dir3, face_dir1, org, depth, width, color);
 
     org.translate(width * face_dir1 + heigth * face_dir2 + depth * face_dir3);
 
