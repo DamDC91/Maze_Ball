@@ -6,7 +6,7 @@
 
 class Cuboid : public Form
 {
-private:
+protected:
     enum Face
     {
         Front = 0,

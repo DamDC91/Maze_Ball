@@ -14,6 +14,10 @@ public:
              Point org = Point(), double l = 1.0, double w = 1.0,
              Color cl = Color());
 
+    Vector getVdir1() const { return vdir1; };
+
+    Vector getVdir2() const { return vdir2; };
+
     void update(double delta_t);
 
     void render();
