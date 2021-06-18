@@ -265,15 +265,18 @@ int main(int argc, char *args[])
         }
 
 
-        Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5, 0.5, 5, Vector(1, 0, 0), Vector(0, 1, 0), RED);
+      //  Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5, 0.5, 5, Vector(4, 0, 0), Vector(0, 1, 0), RED);
+        Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), RED);
         forms_list[number_of_forms] = sol;
         number_of_forms++;
 
-        Cuboid *mur1 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1, 0.3, 5, Vector(1, 0, 0), Vector(0, 1, 0), BLUE);
-        Cuboid *mur2 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.3, 0.1, 5, Vector(0, 1, 0), Vector(0, 0, -1), BLUE);
+        Cuboid *mur1 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);     
 
-        Cuboid *mur3 = new Cuboid(Point(2.5, 0.25, -2.5), 0.1, 0.3, 5, Vector(-1, 0, 0), Vector(0, 1, 0), BLUE);
-        Cuboid *mur4 = new Cuboid(Point(2.5, 0.25, -2.5), 0.3, 0.1, 5, Vector(0, 1, 0), Vector(0, 0, 1), BLUE);
+        Cuboid *mur2 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0,0,-1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
+
+        Cuboid *mur3 = new Cuboid(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,1), BLUE);
+
+        Cuboid *mur4 = new Cuboid(Point(2.5, 0.25, -2.5), 5 * Vector(-1,0,0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
         forms_list[number_of_forms] = mur1;
         number_of_forms++;
         forms_list[number_of_forms] = mur2;

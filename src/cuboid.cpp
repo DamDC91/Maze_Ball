@@ -5,12 +5,15 @@
 
 #include <iostream>
 
-Cuboid::Cuboid(Point c_origin, double c_width, double c_heigth, double c_depth, Vector c_face_dir1, Vector c_face_dir2, Color cl) : origin(c_origin), width(c_width), heigth(c_heigth), depth(c_depth), face_dir1(c_face_dir1), face_dir2(c_face_dir2), color(cl)
+Cuboid::Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2, Vector c_face_dir3, Color cl) : origin(c_origin), color(cl)
 {
-    face_dir1 = 1.0 / face_dir1.norm() * face_dir1;
-    face_dir2 = 1.0 / face_dir2.norm() * face_dir2;
-    face_dir3 = 1.0 / face_dir3.norm() * face_dir3;
-    face_dir3 = face_dir2 ^ face_dir1;
+    width = c_face_dir1.norm();
+    heigth = c_face_dir2.norm();
+    depth = c_face_dir3.norm();
+
+    face_dir1 = 1.0 / c_face_dir1.norm() * c_face_dir1;
+    face_dir2 = 1.0 / c_face_dir2.norm() * c_face_dir2;
+    face_dir3 = 1.0 / c_face_dir3.norm() * c_face_dir3;
 
     center = Point(origin.x + width / 2, origin.y + heigth / 2, origin.z + depth / 2);
 

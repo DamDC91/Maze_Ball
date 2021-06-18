@@ -24,7 +24,7 @@ private:
     Color color;
 
 public:
-    Cuboid(Point c_origin, double c_width, double c_heigth, double c_depth, Vector c_face_dir1, Vector c_face_dir2, Color cl);
+    Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2,Vector c_face_dir3, Color cl);
     void update(double delta_t);
     void render();
 };
