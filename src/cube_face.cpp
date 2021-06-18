@@ -2,7 +2,7 @@
 #include "cube_face.h"
 
 
-Cube_face::Cube_face(Vector v1, Vector v2, Point org, double l, double w, Color cl)
+CubeFace::CubeFace(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 {
     vdir1 = 1.0 / v1.norm() * v1;
     vdir2 = 1.0 / v2.norm() * v2;
@@ -12,14 +12,14 @@ Cube_face::Cube_face(Vector v1, Vector v2, Point org, double l, double w, Color 
     col = cl;
 }
 
-void Cube_face::update(double delta_t)
+void CubeFace::update(double delta_t)
 {
     // Complete this part
   //  this->anim.setTheta(this->anim.getTheta() + 0.3);
   //  this->anim.setPhi(this->anim.getPhi() + 0.3);
 }
 
-void Cube_face::render()
+void CubeFace::render()
 {
     Point p1 = Point();
     Point p2 = p1, p3, p4 = p1;
@@ -40,7 +40,7 @@ void Cube_face::render()
     glEnd();
 }
 
-bool Cube_face::collisionSphere(Point sph_pos, double radius, Vector floor_normal)
+bool CubeFace::collisionSphere(Point sph_pos, double radius, Vector floor_normal)
 {
     Vector horizontal; // horizontal face direction
     Vector vertical; // vertical face direction

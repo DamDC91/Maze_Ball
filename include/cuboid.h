@@ -19,7 +19,7 @@ private:
     Point center;
     Point origin;
     double width, heigth, depth;
-    Cube_face *faces[6];
+    CubeFace *faces[6];
     Vector face_dir1, face_dir2, face_dir3;
     Color color;
 
