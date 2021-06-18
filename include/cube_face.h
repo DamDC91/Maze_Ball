@@ -19,4 +19,5 @@ public:
     void render();
 
     bool collisionSphere(Point sph_pos, double radius, Vector floor_normal);
+    bool collisionSphere(Sphere sphere, Vector floor_normal);
 };

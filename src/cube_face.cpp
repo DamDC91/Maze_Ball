@@ -1,4 +1,5 @@
 #include <GL/glu.h>
+#include "sphere.h"
 #include "cube_face.h"
 
 
@@ -39,6 +40,12 @@ void CubeFace::render()
     }
     glEnd();
 }
+
+bool CubeFace::collisionSphere(Sphere sphere, Vector floor_normal)
+{
+    return collisionSphere(sphere.getAnim().getPos(), sphere.getRadius(), floor_normal);
+}
+
 
 bool CubeFace::collisionSphere(Point sph_pos, double radius, Vector floor_normal)
 {
