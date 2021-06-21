@@ -10,12 +10,13 @@
 class Scene 
 {
 private:
-
+    double alpa, beta;
     std::vector<Wall*> walls;
     Floor *floor;
     std::vector<Sphere*> spheres;
 
 public:
+
     Scene();
     void SetWalls(std::vector<Wall*> walls) { this->walls = walls; };
     void setFloor(Floor* floor) { this->floor = floor; };
