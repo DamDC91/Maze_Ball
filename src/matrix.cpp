@@ -47,3 +47,39 @@ Matrix operator*(const Matrix &m1, const Matrix &m2)
     }
     return m3;
 }
+
+Matrix x_rotation(double theta)
+{
+    return Matrix({1, 0, 0,
+                   0, cos(theta), -sin(theta),
+                   0, sin(theta), cos(theta)});
+}
+
+Matrix y_rotation(double theta)
+{
+    return Matrix({cos(theta), 0, -sin(theta),
+                   0, 1, 0,
+                   sin(theta), 0, cos(theta)});
+}
+
+Matrix z_rotation(double theta)
+{
+    return Matrix({cos(theta), -sin(theta), 0,
+                   sin(theta), cos(theta), 0,
+                   0, 0, 1});
+}
+
+Vector rotate_x(Vector &vec, double theta)
+{
+    return x_rotation(theta)*vec;
+}
+
+Vector rotate_y(Vector &vec, double theta)
+{
+    return y_rotation(theta)*vec;
+}
+
+Vector rotate_z(Vector &vec, double theta)
+{
+    return z_rotation(theta)*vec;
+}
