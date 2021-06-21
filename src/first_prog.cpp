@@ -12,6 +12,8 @@
 #include "sphere.h"
 #include "cube_face.h"
 #include "cuboid.h"
+#include "wall.h"
+#include "floor.h"
 
 /***************************************************************************/
 /* Constants and functions declarations                                    */
@@ -275,22 +277,26 @@ int main(int argc, char *args[])
         }
 
 
-      //  Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5, 0.5, 5, Vector(4, 0, 0), Vector(0, 1, 0), RED);
-        Cuboid *sol = new Cuboid(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), RED);
+
+        Floor *sol = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), Vector(0,1,0), RED);
+
         forms_list[number_of_forms++] = sol;
 
-        Cuboid *wall1 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);     
+        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);     
 
-        Cuboid *wall2 = new Cuboid(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0,0,-1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
+        Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0,0,-1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
 
-        Cuboid *wall3 = new Cuboid(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,1), BLUE);
+        Wall *wall3 = new Wall(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,1), BLUE);
 
-        Cuboid *wall4 = new Cuboid(Point(2.5, 0.25, -2.5), 5 * Vector(-1,0,0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
+        Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1,0,0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
+
         forms_list[number_of_forms++] = wall1;
         forms_list[number_of_forms++] = wall2;
         forms_list[number_of_forms++] = wall3;
         forms_list[number_of_forms++] = wall4;
 
+        Sphere *sphere = new Sphere(0.2, Point(0,0.25+0.2,0), YELLOW);
+        forms_list[number_of_forms++] = sphere;
 
         float angle = 0.0;
 
