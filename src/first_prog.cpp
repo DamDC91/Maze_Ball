@@ -1,4 +1,5 @@
 // Using SDL, SDL OpenGL and standard IO
+#include <vector>
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
@@ -15,6 +16,7 @@
 #include "wall.h"
 #include "floor.h"
 
+#include "scene.h"
 /***************************************************************************/
 /* Constants and functions declarations                                    */
 /***************************************************************************/
@@ -170,63 +172,6 @@ bool initGL()
     return success;
 }
 
-void update(Form *formlist[MAX_FORMS_NUMBER], double delta_t)
-{
-    // Update the list of forms
-    unsigned short i = 0;
-    while (formlist[i] != NULL)
-    {
-        formlist[i]->update(delta_t);
-        i++;
-    }
-}
-
-void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos, float angle = 0.0)
-{
-    // Clear color buffer and Z-Buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Initialize Modelview Matrix
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    // Set the camera position and parameters
-    gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
-    // Isometric view
-    glRotated(-45, 0, 1, 0);
-    glRotated(30, 1, 0, -1);
-
-    glRotated(angle, 0, 1, 0);
-
-    // X, Y and Z axis
-    glPushMatrix(); // Preserve the camera viewing point for further forms
-    // Render the coordinates system
-    glBegin(GL_LINES);
-    {
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(1, 0, 0);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 1, 0);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 0, 1);
-    }
-    glEnd();
-    glPopMatrix(); // Restore the camera viewing point for next object
-
-    // Render the list of forms
-    unsigned short i = 0;
-    while (formlist[i] != NULL)
-    {
-        glPushMatrix(); // Preserve the camera viewing point for further forms
-        formlist[i]->render();
-        glPopMatrix(); // Restore the camera viewing point for next object
-        i++;
-    }
-}
 
 void close(SDL_Window **window)
 {
@@ -268,21 +213,9 @@ int main(int argc, char *args[])
         // Camera position
         Point camera_position(0, 0.0, 8.0);
 
-        // The forms to render
-        Form *forms_list[MAX_FORMS_NUMBER];
-        unsigned short number_of_forms = 0, i;
-        for (i = 0; i < MAX_FORMS_NUMBER; i++)
-        {
-            forms_list[i] = NULL;
-        }
+        Floor *floor = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), Vector(0,1,0), RED);
 
-
-
-        Floor *sol = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), Vector(0,1,0), RED);
-
-        forms_list[number_of_forms++] = sol;
-
-        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);     
+        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);    
 
         Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0,0,-1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
 
@@ -290,13 +223,12 @@ int main(int argc, char *args[])
 
         Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1,0,0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
 
-        forms_list[number_of_forms++] = wall1;
-        forms_list[number_of_forms++] = wall2;
-        forms_list[number_of_forms++] = wall3;
-        forms_list[number_of_forms++] = wall4;
-
         Sphere *sphere = new Sphere(0.2, Point(0,0.25+0.2,0), YELLOW);
-        forms_list[number_of_forms++] = sphere;
+
+        Scene scene;
+        scene.setFloor(floor);
+        scene.SetWalls(std::vector<Wall*> {wall1, wall2, wall3, wall4});
+        scene.setSpheres(std::vector<Sphere*> {sphere});
 
         float angle = 0.0;
 
@@ -352,11 +284,11 @@ int main(int argc, char *args[])
             if (elapsed_time > ANIM_DELAY)
             {
                 previous_time = current_time;
-                update(forms_list, 1e-3 * elapsed_time); // International system units : seconds
+                scene.update(1e-3 * elapsed_time); // International system units : seconds
             }
 
             // Render the scene
-            render(forms_list, camera_position, angle);
+            scene.render(camera_position, angle);
 
             // Update window screen
             SDL_GL_SwapWindow(gWindow);

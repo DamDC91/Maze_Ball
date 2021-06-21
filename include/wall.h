@@ -3,6 +3,7 @@
 #include "forms.h"
 #include "cube_face.h"
 #include "geometry.h"
+#include "cuboid.h"
 
 class Wall : public Cuboid
 {
