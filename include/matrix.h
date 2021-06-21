@@ -1,5 +1,5 @@
-#ifndef PROJETTRANSVERSE_MATRIX_H
-#define PROJETTRANSVERSE_MATRIX_H
+#ifndef MATRIX_H_INCLUDED
+#define MATRIX_H_INCLUDED
 
 
 #include <array>
@@ -25,4 +25,4 @@ std::ostream &operator<<(std::ostream &os, Matrix const &mat);
 Vector operator*(const Matrix &mat, const Vector &vec);
 Matrix operator*(const Matrix &m1, const Matrix &m2);
 
-#endif //PROJETTRANSVERSE_MATRIX_H
+#endif //MATRIX_H_INCLUDED
