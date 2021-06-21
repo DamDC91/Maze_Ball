@@ -19,19 +19,19 @@ Cuboid::Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2, Vector c_
 
     Point org = origin;
 
-    faces[Front] = new CubeFace(face_dir1, face_dir2, org, width, heigth, color);
+    faces[Front] = new CubeFace(face_dir1, face_dir2, -face_dir3, org, width, heigth, color);
 
-    faces[Left] = new CubeFace(face_dir2, face_dir3, org, heigth, depth, color);
+    faces[Left] = new CubeFace(face_dir2, face_dir3, -face_dir1, org, heigth, depth, color);
 
-    faces[Bottom] = new CubeFace(face_dir3, face_dir1, org, depth, width, color);
+    faces[Bottom] = new CubeFace(face_dir3, face_dir1, -face_dir2, org, depth, width, color);
 
     org.translate(width * face_dir1 + heigth * face_dir2 + depth * face_dir3);
 
-    faces[Top] = new CubeFace(-1 * face_dir3, -1 * face_dir1, org, depth, width, color);
+    faces[Top] = new CubeFace(-face_dir3, -face_dir1, face_dir2,  org, depth, width, color);
 
-    faces[Right] = new CubeFace(-1 * face_dir3, -1 * face_dir2, org, depth, heigth, color);
+    faces[Right] = new CubeFace(-face_dir3, -face_dir2, face_dir1, org, depth, heigth, color);
 
-    faces[Back] = new CubeFace(-1 * face_dir1, -1 * face_dir2, org, width, heigth, color);
+    faces[Back] = new CubeFace(-face_dir1, -face_dir2, face_dir3, org, width, heigth, color);
 }
 
 void Cuboid::update(double delta_t)
