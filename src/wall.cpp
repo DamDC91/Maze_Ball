@@ -16,8 +16,9 @@ bool Wall::collisionSphere(Sphere &sphere, Vector const &floor_normal)
     for (auto &face : this->faces)
     {
         // check if face is parallel to the floor
-        if (face->getVdir1() * floor_normal > 1e-6 || face->getVdir2() * floor_normal > 1e-6)
+        if (abs(face->getVdir1() * floor_normal) > 1e-3 || abs(face->getVdir2() * floor_normal) > 1e-3)
         {
+
             if (face->collisionSphere(sphere.getAnim().getPos(), sphere.getRadius(), floor_normal))
             {
                 Vector speed = sphere.getAnim().getSpeed();

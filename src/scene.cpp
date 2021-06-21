@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Scene::Scene()
+Scene::Scene() : alpha(0.0), beta(0.0), inc(0.1)
 {
     floor = nullptr;
 }
@@ -21,8 +21,8 @@ void Scene::render(const Point &cam_pos, float angle) const
     gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     // Isometric view
-    glRotated(-45, 0, 1, 0);
-    glRotated(30, 1, 0, -1);
+    //glRotated(-45, 0, 1, 0);
+    //glRotated(30, 1, 0, -1);
 
     glRotated(angle, 0, 1, 0);
 
@@ -68,7 +68,7 @@ void Scene::render(const Point &cam_pos, float angle) const
     }
     glPopMatrix();
 
-
+    
 }
 
 void Scene::update(double delta_t)

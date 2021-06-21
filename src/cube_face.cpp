@@ -47,7 +47,6 @@ bool CubeFace::collisionSphere(Sphere sphere, Vector floor_normal)
     return collisionSphere(sphere.getAnim().getPos(), sphere.getRadius(), floor_normal);
 }
 
-
 bool CubeFace::collisionSphere(Point sph_pos, double radius, Vector floor_normal)
 {
     Vector horizontal; // horizontal face direction
@@ -65,7 +64,7 @@ bool CubeFace::collisionSphere(Point sph_pos, double radius, Vector floor_normal
     }
 
     Point face_h1 = this->anim.getPos();
-    Point face_h2 = {face_h1.x + horizontal.x, face_h1.y + this->vdir1.y, face_h1.z + this->vdir1.z};
+    Point face_h2 = {face_h1.x + horizontal.x, face_h1.y + horizontal.y, face_h1.z + horizontal.z};
 
     Vector h1_to_sph = Vector(face_h1, sph_pos);
     Vector h2_to_sph = Vector(face_h2, sph_pos);
@@ -73,8 +72,8 @@ bool CubeFace::collisionSphere(Point sph_pos, double radius, Vector floor_normal
 
     double a = h1_to_sph * horizontal; // algebraic distance
     bool collides_face = std::abs(h1_to_sph * face_normal) <= radius && (a > 0 && a <= this->length);
-    bool collides_h1 = std::abs((h1_to_sph ^ vertical) * (1.0 / vertical.norm())) <= radius;
-    bool collides_h2 = std::abs((h2_to_sph ^ vertical) * (1.0 / vertical.norm())) <= radius;
+    bool collides_h1 = (h1_to_sph ^ vertical).norm() * (1.0 / vertical.norm()) <= radius;
+    bool collides_h2 = (h2_to_sph ^ vertical).norm() * (1.0 / vertical.norm()) <= radius;
 
     return collides_face || collides_h1 || collides_h2;
 }

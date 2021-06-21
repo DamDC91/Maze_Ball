@@ -33,7 +33,6 @@ Vector operator*(const Matrix &mat, const Vector &vec)
 Matrix operator*(const Matrix &m1, const Matrix &m2)
 {
     Matrix m3;
-    double s;
     for (int i = 0; i < 3; ++i)
     {
         for (int j = 0; j < 3; ++j)

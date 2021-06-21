@@ -10,7 +10,7 @@
 class Scene 
 {
 private:
-    double alpha=0.0, beta=0.0, inc=0.1;
+    double alpha, beta, inc;
     std::vector<Wall*> walls;
     Floor *floor;
     std::vector<Sphere*> spheres;

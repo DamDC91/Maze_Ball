@@ -214,7 +214,7 @@ int main(int argc, char *args[])
 
         Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
 
-        Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0), YELLOW);
+        Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0.0), YELLOW);
 
         Scene scene;
         scene.setFloor(floor);
@@ -225,9 +225,12 @@ int main(int argc, char *args[])
 
         // Get first "current time"
         previous_time = SDL_GetTicks();
+        unsigned int time = SDL_GetTicks();
+        unsigned int last_time=0;
         // While application is running
         while (!quit)
         {
+            time = SDL_GetTicks();
           //  angle += 0.04;
 
             // Handle events on queue
@@ -287,7 +290,14 @@ int main(int argc, char *args[])
             if (elapsed_time > ANIM_DELAY)
             {
                 previous_time = current_time;
+
                 scene.update(1e-3 * elapsed_time); // International system units : seconds
+            }
+
+            if(1e-3 * time >= last_time + 1)
+            {
+                last_time = 1e-3 * time;
+                std::cout << last_time <<" s"<< std::endl;
             }
 
             // Render the scene
