@@ -16,8 +16,8 @@ public:
              Color cl = Color());
 
     Vector getVdir1() const { return vdir1; };
-
     Vector getVdir2() const { return vdir2; };
+    Vector getNormal() const {return normal; };
 
     void update(double delta_t);
 

@@ -49,13 +49,22 @@ void Scene::render(const Point &cam_pos, float angle) const
     glRotated(beta,0,0,1);
 
     floor->render();
-    for(size_t i=0;i<this->walls.size();i++)
+
+    for (auto wall : this->walls)
     {
-        this->walls[i]->render();
+        for(auto sphere : this->spheres)
+        {
+            wall->collisionSphere(*sphere, this->floor->getNormal());
+        }
     }
-    for(size_t i=0;i<this->spheres.size();i++)
+
+    for(auto wall : this->walls)
     {
-        this->spheres[i]->render();
+        wall->render();
+    }
+    for(auto sphere : this->spheres)
+    {
+        sphere->render();
     }
     glPopMatrix();
 

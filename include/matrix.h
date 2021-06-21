@@ -25,6 +25,8 @@ std::ostream &operator<<(std::ostream &os, Matrix const &mat);
 
 Vector operator*(const Matrix &mat, const Vector &vec);
 Matrix operator*(const Matrix &m1, const Matrix &m2);
+Matrix operator*(const Matrix &mat, double sca); //TODO
+Matrix operator*(double sca, const Matrix &mat); //TODO
 
 Matrix x_rotation(double theta);
 Matrix y_rotation(double theta);
