@@ -69,17 +69,17 @@ Matrix z_rotation(double theta)
                    0, 0, 1});
 }
 
-Vector rotate_x(Vector &vec, double theta)
+Vector rotate_x(Vector const &vec, double theta)
 {
     return x_rotation(theta)*vec;
 }
 
-Vector rotate_y(Vector &vec, double theta)
+Vector rotate_y(Vector const &vec, double theta)
 {
     return y_rotation(theta)*vec;
 }
 
-Vector rotate_z(Vector &vec, double theta)
+Vector rotate_z(Vector const &vec, double theta)
 {
     return z_rotation(theta)*vec;
 }
