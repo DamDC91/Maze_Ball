@@ -1,6 +1,7 @@
 #pragma once
 
 #include "forms.h"
+#include "sphere.h"
 
 
 // A face of a cube
