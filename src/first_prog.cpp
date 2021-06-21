@@ -30,7 +30,6 @@ const int MAX_FORMS_NUMBER = 10;
 // Animation actualization delay (in ms) => 100 updates per second
 const Uint32 ANIM_DELAY = 10;
 
-
 // Starts up SDL, creates window, and initializes OpenGL
 bool init(SDL_Window **window, SDL_GLContext *context);
 
@@ -45,7 +44,6 @@ void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos);
 
 // Frees media and shuts down SDL
 void close(SDL_Window **window);
-
 
 /***************************************************************************/
 /* Functions implementations                                               */
@@ -105,7 +103,6 @@ bool init(SDL_Window **window, SDL_GLContext *context)
     return success;
 }
 
-
 bool initGL()
 {
     bool success = true;
@@ -119,8 +116,7 @@ bool initGL()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Fix aspect ratio and depth clipping planes
-    gluPerspective(40.0, (GLdouble) SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
-
+    gluPerspective(40.0, (GLdouble)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
 
     // Initialize Modelview Matrix
     glMatrixMode(GL_MODELVIEW);
@@ -131,7 +127,6 @@ bool initGL()
 
     // Activate Z-Buffer
     glEnable(GL_DEPTH_TEST);
-
 
     // Lighting basic configuration and activation
     const GLfloat light_ambient[] = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -160,7 +155,6 @@ bool initGL()
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
-
     // Check for error
     error = glGetError();
     if (error != GL_NO_ERROR)
@@ -172,7 +166,6 @@ bool initGL()
     return success;
 }
 
-
 void close(SDL_Window **window)
 {
     //Destroy window
@@ -182,7 +175,6 @@ void close(SDL_Window **window)
     //Quit SDL subsystems
     SDL_Quit();
 }
-
 
 /***************************************************************************/
 /* MAIN Function                                                           */
@@ -194,7 +186,6 @@ int main(int argc, char *args[])
 
     // OpenGL context
     SDL_GLContext gContext;
-
 
     // Start up SDL and create window
     if (!init(&gWindow, &gContext))
@@ -213,22 +204,22 @@ int main(int argc, char *args[])
         // Camera position
         Point camera_position(0, 0.0, 8.0);
 
-        Floor *floor = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0,0,-1), Vector(0,1,0), RED);
+        Floor *floor = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), Vector(0, 1, 0), RED);
 
-        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,-1), BLUE);    
+        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), BLUE);
 
-        Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0,0,-1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
+        Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0, 0, -1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
 
-        Wall *wall3 = new Wall(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0,0,1), BLUE);
+        Wall *wall3 = new Wall(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, 1), BLUE);
 
-        Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1,0,0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
+        Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
 
-        Sphere *sphere = new Sphere(0.2, Point(0,0.25+0.2,0), YELLOW);
+        Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0), YELLOW);
 
         Scene scene;
         scene.setFloor(floor);
-        scene.SetWalls(std::vector<Wall*> {wall1, wall2, wall3, wall4});
-        scene.setSpheres(std::vector<Sphere*> {sphere});
+        scene.SetWalls(std::vector<Wall *>{wall1, wall2, wall3, wall4});
+        scene.setSpheres(std::vector<Sphere *>{sphere});
 
         float angle = 0.0;
 
@@ -237,7 +228,7 @@ int main(int argc, char *args[])
         // While application is running
         while (!quit)
         {
-              angle += 0.04;
+          //  angle += 0.04;
 
             // Handle events on queue
             while (SDL_PollEvent(&event) != 0)
@@ -247,34 +238,46 @@ int main(int argc, char *args[])
 
                 switch (event.type)
                 {
-                    // User requests quit
-                    case SDL_QUIT:
+                // User requests quit
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                case SDL_KEYDOWN:
+                    // Handle key pressed with current mouse position
+                    SDL_GetMouseState(&x, &y);
+
+                    switch (key_pressed)
+                    {
+                    // Quit the program when 'q' or Escape keys are pressed
+                    case SDLK_q:
+                    case SDLK_ESCAPE:
                         quit = true;
                         break;
-                    case SDL_KEYDOWN:
-                        // Handle key pressed with current mouse position
-                        SDL_GetMouseState(&x, &y);
-
-                        switch (key_pressed)
-                        {
-                            // Quit the program when 'q' or Escape keys are pressed
-                            case SDLK_q:
-                            case SDLK_ESCAPE:
-                                quit = true;
-                                break;
-                            case SDLK_o:
-                                camera_position.y += 0.3;
-                                break;
-                            case SDLK_p:
-                                camera_position.y -= 0.3;
-                                break;
-
-                            default:
-                                break;
-                        }
+                    case SDLK_o:
+                        camera_position.y += 0.3;
                         break;
+                    case SDLK_p:
+                        camera_position.y -= 0.3;
+                        break;
+                    case SDLK_UP:
+                        scene.decAlpha();
+                        break;
+                    case SDLK_DOWN:
+                        scene.incAlpha();
+                        break;
+                    case SDLK_LEFT:
+                        scene.incBeta();
+                        break;
+                    case SDLK_RIGHT:
+                        scene.decBeta();
+                        break;
+
                     default:
                         break;
+                    }
+                    break;
+                default:
+                    break;
                 }
             }
 

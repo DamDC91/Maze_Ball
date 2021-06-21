@@ -44,6 +44,9 @@ void Scene::render(const Point &cam_pos, float angle) const
     glEnd();
     glPopMatrix(); // Restore the camera viewing point for next object
 
+    glPushMatrix();
+    glRotated(alpha,1,0,0);
+    glRotated(beta,0,0,1);
 
     floor->render();
     for(size_t i=0;i<this->walls.size();i++)
@@ -54,6 +57,9 @@ void Scene::render(const Point &cam_pos, float angle) const
     {
         this->spheres[i]->render();
     }
+    glPopMatrix();
+
+
 }
 
 void Scene::update(double delta_t)
@@ -65,6 +71,6 @@ void Scene::update(double delta_t)
     }
     for(size_t i=0;i<this->spheres.size();i++)
     {
-        this->spheres[i]->update(delta_t);
+        this->spheres[i]->update(delta_t, this->alpha, beta);
     }
 }

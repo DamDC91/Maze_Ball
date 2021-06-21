@@ -22,4 +22,6 @@ public:
     void update(double delta_t);
 
     void render();
+
+    void update(double delta_t, double alpha, double beta);
 };
