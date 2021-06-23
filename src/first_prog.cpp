@@ -207,8 +207,8 @@ int main(int argc, char *args[])
         double floor_length = 5;
         double floor_width = 5;
         double floor_depth = 0.5;
-        double wall_depth = 0.1; // thickness
-        double wall_width = 0.3; // height
+        double wall_thickness = 0.1; // thickness
+        double wall_height = 0.3; // height
 
         Floor *floor = new Floor(Point(-floor_length / 2, -floor_depth / 2, floor_width / 2),
                                  Vector(1, 0, 0),
@@ -219,43 +219,43 @@ int main(int argc, char *args[])
         Wall *back = new Wall(Point(-floor_length / 2, floor_depth / 2, -floor_width / 2),
                               Vector(1, 0, 0),
                               Vector(0, 1, 0),
-                              floor_length, wall_width, wall_depth, BLUE);
+                              floor_length, wall_height, wall_thickness, BLUE);
 
         Wall *front = new Wall(Point(floor_length / 2, floor_depth / 2, floor_width / 2),
-                              Vector(-1, 0, 0),
-                              Vector(0, 1, 0),
-                              floor_length, wall_width, wall_depth, BLUE);
+                               Vector(-1, 0, 0),
+                               Vector(0, 1, 0),
+                               floor_length, wall_height, wall_thickness, BLUE);
 
-//        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, (floor_width / 2) - wall_depth),
+//        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, (floor_width / 2) - wall_thickness),
 //                              Vector(0, 0, -1),
 //                              Vector(0, 1, 0),
-//                              floor_width - 2 * wall_depth, wall_width, wall_depth, BLUE);
+//                              floor_width - 2 * wall_thickness, wall_height, wall_thickness, BLUE);
 
         Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, floor_width / 2),
                               Vector(0, 0, -1),
                               Vector(0, 1, 0),
-                              floor_width, wall_width, wall_depth, BLUE);
+                              floor_width, wall_height, wall_thickness, BLUE);
 
-//        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, (-floor_width / 2) + wall_depth),
+//        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, (-floor_width / 2) + wall_thickness),
 //                              Vector(0, 0, 1),
 //                              Vector(0, 1, 0),
-//                              floor_width - 2*wall_depth, wall_width, wall_depth, BLUE);
+//                              floor_width - 2*wall_thickness, wall_height, wall_thickness, BLUE);
 
         Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, -floor_width / 2),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               floor_width, wall_width, wall_depth, BLUE);
+                               floor_width, wall_height, wall_thickness, BLUE);
+
+        Wall *center = new Wall(Point(-wall_thickness, floor_depth / 2, floor_width / 4),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               floor_width/4, wall_height, wall_thickness, BLUE);
 
         Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0.0), YELLOW);
 
-        std::cout << back->getNormal() << std::endl;
-        std::cout << front->getNormal() << std::endl;
-        std::cout << left->getNormal() << std::endl;
-        std::cout << right->getNormal() << std::endl;
-
         Scene scene;
         scene.setFloor(floor);
-        scene.SetWalls(std::vector<Wall *>{back, front, left, right});
+        scene.SetWalls(std::vector<Wall *>{back, front, left, right, center});
         scene.setSpheres(std::vector<Sphere *>{sphere});
 
         float angle = 0.0;

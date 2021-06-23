@@ -46,15 +46,15 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     Vector horizontal; // horizontal face direction
     Vector vertical; // vertical face direction
 
-    if (floor_normal * this->vdir1 < 1e-6)
+    if (std::abs(floor_normal * this->vdir1) < 1e-6)
     { // vdir1 orthogonal to the floor <-> vdir1 = horizontal direction
-        horizontal = this->vdir1;
-        vertical = this->vdir2;
+        horizontal = this->vdir1 * this->length;
+        vertical = this->vdir2 * this->width;
     }
     else
     {
-        horizontal = this->vdir2;
-        vertical = this->vdir1;
+        horizontal = this->vdir2 * this->width;
+        vertical = this->vdir1 * this->length;
     }
 
     Point face_h1 = this->anim.getPos();
@@ -64,31 +64,35 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     Vector h2_to_sph = Vector(face_h2, sphere.getAnim().getPos());
 
     // algebraic distance from the origin of the face to the sphere, along the horizontal axis of the wall
-    double d_horizontal = h1_to_sph * horizontal;
+    double d_horizontal = h1_to_sph * horizontal * (1.0 / horizontal.norm());
     double d_wall = h1_to_sph * this->getNormal(); // algebraic distance to the wall
-    double d_h1_to_sph = (h1_to_sph ^ vertical).norm() * (1.0 / vertical.norm());
-    double d_h2_to_sph = (h2_to_sph ^ vertical).norm() * (1.0 / vertical.norm());
+    double d_h1_to_sph = (vertical ^ h1_to_sph).norm() * (1.0 / vertical.norm());
+    double d_h2_to_sph = (vertical ^ h2_to_sph).norm() * (1.0 / vertical.norm());
 
-    bool collides_face = std::abs(d_wall) <= sphere.getRadius() && (d_horizontal > 0 && d_horizontal <= this->length);
+    bool collides_face =
+            std::abs(d_wall) <= sphere.getRadius() && (d_horizontal > 0 && d_horizontal <= horizontal.norm());
     bool collides_h1 = std::abs(d_h1_to_sph) <= sphere.getRadius();
     bool collides_h2 = std::abs(d_h2_to_sph) <= sphere.getRadius();
 
 
     Vector correction;
+    Vector speed = sphere.getAnim().getSpeed();
 
     if (collides_face)
     {
         correction = std::abs(sphere.getRadius() - d_wall) * this->getNormal();
     }
-    
-    if (collides_h1)
+    else
     {
-        correction = std::abs(sphere.getRadius() - d_h1_to_sph) * 0;// * h1_to_sph;
-    }
+        if (collides_h1)
+        {
+            correction = std::abs(sphere.getRadius() - d_h1_to_sph) * speed * (-1.0 / speed.norm());
+        }
 
-    if (collides_h2)
-    {
-        correction = std::abs(sphere.getRadius() - d_h2_to_sph) * 0; //* h2_to_sph;
+        if (collides_h2)
+        {
+            correction = std::abs(sphere.getRadius() - d_h2_to_sph) * speed * (-1.0 / speed.norm());
+        }
     }
 
     if (collides_face || collides_h1 || collides_h2)
@@ -99,8 +103,14 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
         sphere.getAnim().setPos(new_pos);
 
         // modifying sphere speed
-        Vector speed = sphere.getAnim().getSpeed();
-        sphere.getAnim().setSpeed(speed - 2 * (speed * this->getNormal()) * this->getNormal() * 0.95);
+        if (collides_face)
+        {
+            sphere.getAnim().setSpeed(speed - 2 * (speed * this->getNormal()) * this->getNormal() * 0.95);
+        }
+        else
+        {
+            sphere.getAnim().setSpeed(-speed);
+        }
 
         return true;
     }
