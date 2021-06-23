@@ -15,14 +15,13 @@ bool Wall::collisionSphere(Sphere &sphere, Vector const &floor_normal)
 {
     for (auto &face : this->faces)
     {
+        face->setColor(BLUE);
         // check if face is parallel to the floor
-        if (abs(face->getVdir1() * floor_normal) > 1e-3 || abs(face->getVdir2() * floor_normal) > 1e-3)
+        if (std::abs(face->getVdir1() * floor_normal) > 1e-3 || std::abs(face->getVdir2() * floor_normal) > 1e-3)
         {
-
-            if (face->collisionSphere(sphere.getAnim().getPos(), sphere.getRadius(), floor_normal))
+            if (face->collisionSphere(sphere, floor_normal))
             {
-                Vector speed = sphere.getAnim().getSpeed();
-                sphere.getAnim().setSpeed(speed - 2*(speed*face->getNormal())*face->getNormal());
+                face->setColor(GREEN);
                 return true;
             }
         }

@@ -8,7 +8,13 @@ class Coordinates
 {
 public:
     double x, y, z;
-    Coordinates(double xx=0, double yy=0, double zz=0) {x=xx; y=yy; z=zz;}
+
+    Coordinates(double xx = 0, double yy = 0, double zz = 0)
+    {
+        x = xx;
+        y = yy;
+        z = zz;
+    }
 };
 
 
@@ -57,6 +63,8 @@ Vector operator-(const Vector &v);
 Vector operator-(const Vector &v1, const Vector &v2);
 
 Vector operator*(const double &k, const Vector &v);
+
+Vector operator*(const Vector &v, const double &k);
 
 // Scalar product
 double operator*(const Vector &v1, const Vector &v2);

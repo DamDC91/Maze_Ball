@@ -45,41 +45,39 @@ void Scene::render(const Point &cam_pos, float angle) const
     glPopMatrix(); // Restore the camera viewing point for next object
 
     glPushMatrix();
-    glRotated(alpha,1,0,0);
-    glRotated(beta,0,0,1);
+    glRotated(alpha, 1, 0, 0);
+    glRotated(beta, 0, 0, 1);
 
     floor->render();
 
     for (auto wall : this->walls)
     {
-        for(auto sphere : this->spheres)
+        for (auto sphere : this->spheres)
         {
             wall->collisionSphere(*sphere, this->floor->getNormal());
         }
     }
 
-    for(auto wall : this->walls)
+    for (auto wall : this->walls)
     {
         wall->render();
     }
-    for(auto sphere : this->spheres)
+    for (auto sphere : this->spheres)
     {
         sphere->render();
     }
     glPopMatrix();
-
-    
 }
 
 void Scene::update(double delta_t)
 {
     this->floor->update(delta_t);
-    for(size_t i=0;i<this->walls.size();i++)
+    for (auto & wall : this->walls)
     {
-        this->walls[i]->update(delta_t);
+        wall->update(delta_t);
     }
-    for(size_t i=0;i<this->spheres.size();i++)
+    for (auto & sphere : this->spheres)
     {
-        this->spheres[i]->update(delta_t, this->alpha, beta);
+        sphere->update(delta_t, this->alpha, this->beta);
     }
 }
