@@ -18,13 +18,19 @@ protected:
     };
     Point center;
     Point origin;
-    double width, heigth, depth;
+    double length, width, depth;
     CubeFace *faces[6];
-    Vector face_dir1, face_dir2, face_dir3;
+    Vector vdir1, vdir2;
     Color color;
 
 public:
-    Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2,Vector c_face_dir3, Color cl);
+    Cuboid(Vector v1 = Vector(1, 0, 0), Vector v2 = Vector(0, 0, 1),
+           Point org = Point(), double l = 1.0, double w = 1.0, double d = 1.0,
+           Color cl = Color());
+
     void update(double delta_t);
+
     void render();
+
+    Vector getNormal() {return vdir1^vdir2;}
 };

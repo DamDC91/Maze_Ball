@@ -116,7 +116,7 @@ bool initGL()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Fix aspect ratio and depth clipping planes
-    gluPerspective(40.0, (GLdouble)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
+    gluPerspective(40.0, (GLdouble) SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
 
     // Initialize Modelview Matrix
     glMatrixMode(GL_MODELVIEW);
@@ -204,21 +204,58 @@ int main(int argc, char *args[])
         // Camera position
         Point camera_position(0, 0.0, 8.0);
 
-        Floor *floor = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), Vector(0, 1, 0), RED);
+        double floor_length = 5;
+        double floor_width = 5;
+        double floor_depth = 0.5;
+        double wall_depth = 0.1; // thickness
+        double wall_width = 0.3; // height
 
-        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), BLUE);
+        Floor *floor = new Floor(Point(-floor_length / 2, -floor_depth / 2, floor_width / 2),
+                                 Vector(1, 0, 0),
+                                 Vector(0, 0, -1),
+                                 floor_length, floor_width, floor_depth, RED);
 
-        Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0, 0, -1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
+        // walls normals are pointing toward the center of the floor
+        Wall *back = new Wall(Point(-floor_length / 2, floor_depth / 2, -floor_width / 2),
+                              Vector(1, 0, 0),
+                              Vector(0, 1, 0),
+                              floor_length, wall_width, wall_depth, BLUE);
 
-        Wall *wall3 = new Wall(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, 1), BLUE);
+        Wall *front = new Wall(Point(floor_length / 2, floor_depth / 2, floor_width / 2),
+                              Vector(-1, 0, 0),
+                              Vector(0, 1, 0),
+                              floor_length, wall_width, wall_depth, BLUE);
 
-        Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
+//        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, (floor_width / 2) - wall_depth),
+//                              Vector(0, 0, -1),
+//                              Vector(0, 1, 0),
+//                              floor_width - 2 * wall_depth, wall_width, wall_depth, BLUE);
+
+        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, floor_width / 2),
+                              Vector(0, 0, -1),
+                              Vector(0, 1, 0),
+                              floor_width, wall_width, wall_depth, BLUE);
+
+//        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, (-floor_width / 2) + wall_depth),
+//                              Vector(0, 0, 1),
+//                              Vector(0, 1, 0),
+//                              floor_width - 2*wall_depth, wall_width, wall_depth, BLUE);
+
+        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, -floor_width / 2),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               floor_width, wall_width, wall_depth, BLUE);
 
         Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0.0), YELLOW);
 
+        std::cout << back->getNormal() << std::endl;
+        std::cout << front->getNormal() << std::endl;
+        std::cout << left->getNormal() << std::endl;
+        std::cout << right->getNormal() << std::endl;
+
         Scene scene;
         scene.setFloor(floor);
-        scene.SetWalls(std::vector<Wall *>{wall1, wall2, wall3, wall4});
+        scene.SetWalls(std::vector<Wall *>{back, front, left, right});
         scene.setSpheres(std::vector<Sphere *>{sphere});
 
         float angle = 0.0;
@@ -226,12 +263,12 @@ int main(int argc, char *args[])
         // Get first "current time"
         previous_time = SDL_GetTicks();
         unsigned int time = SDL_GetTicks();
-        unsigned int last_time=0;
+        unsigned int last_time = 0;
         // While application is running
         while (!quit)
         {
             time = SDL_GetTicks();
-          //  angle += 0.04;
+            //  angle += 0.04;
 
             // Handle events on queue
             while (SDL_PollEvent(&event) != 0)
@@ -241,46 +278,46 @@ int main(int argc, char *args[])
 
                 switch (event.type)
                 {
-                // User requests quit
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-                case SDL_KEYDOWN:
-                    // Handle key pressed with current mouse position
-                    SDL_GetMouseState(&x, &y);
-
-                    switch (key_pressed)
-                    {
-                    // Quit the program when 'q' or Escape keys are pressed
-                    case SDLK_q:
-                    case SDLK_ESCAPE:
+                    // User requests quit
+                    case SDL_QUIT:
                         quit = true;
                         break;
-                    case SDLK_o:
-                        camera_position.y += 0.3;
-                        break;
-                    case SDLK_p:
-                        camera_position.y -= 0.3;
-                        break;
-                    case SDLK_UP:
-                        scene.decAlpha();
-                        break;
-                    case SDLK_DOWN:
-                        scene.incAlpha();
-                        break;
-                    case SDLK_LEFT:
-                        scene.incBeta();
-                        break;
-                    case SDLK_RIGHT:
-                        scene.decBeta();
-                        break;
+                    case SDL_KEYDOWN:
+                        // Handle key pressed with current mouse position
+                        SDL_GetMouseState(&x, &y);
 
+                        switch (key_pressed)
+                        {
+                            // Quit the program when 'q' or Escape keys are pressed
+                            case SDLK_q:
+                            case SDLK_ESCAPE:
+                                quit = true;
+                                break;
+                            case SDLK_o:
+                                camera_position.y += 0.3;
+                                break;
+                            case SDLK_p:
+                                camera_position.y -= 0.3;
+                                break;
+                            case SDLK_UP:
+                                scene.decAlpha();
+                                break;
+                            case SDLK_DOWN:
+                                scene.incAlpha();
+                                break;
+                            case SDLK_LEFT:
+                                scene.incBeta();
+                                break;
+                            case SDLK_RIGHT:
+                                scene.decBeta();
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
-                    }
-                    break;
-                default:
-                    break;
                 }
             }
 
@@ -294,10 +331,10 @@ int main(int argc, char *args[])
                 scene.update(1e-3 * elapsed_time); // International system units : seconds
             }
 
-            if(1e-3 * time >= last_time + 1)
+            if (1e-3 * time >= last_time + 1)
             {
                 last_time = 1e-3 * time;
-                std::cout << last_time <<" s"<< std::endl;
+                std::cout << last_time << " s" << std::endl;
             }
 
             // Render the scene

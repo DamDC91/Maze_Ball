@@ -5,33 +5,29 @@
 
 #include <iostream>
 
-Cuboid::Cuboid(Point c_origin, Vector c_face_dir1, Vector c_face_dir2, Vector c_face_dir3, Color cl) : origin(c_origin), color(cl)
+Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Color cl)
 {
-    width = c_face_dir1.norm();
-    heigth = c_face_dir2.norm();
-    depth = c_face_dir3.norm();
+    this->vdir1 = v1 * (1.0 / v1.norm());
+    this->vdir2 = v2 * (1.0 / v2.norm());
 
-    face_dir1 = 1.0 / c_face_dir1.norm() * c_face_dir1;
-    face_dir2 = 1.0 / c_face_dir2.norm() * c_face_dir2;
-    face_dir3 = 1.0 / c_face_dir3.norm() * c_face_dir3;
+    this->length = l;
+    this->width = w;
+    this->depth = d;
 
-    center = Point(origin.x + width / 2, origin.y + heigth / 2, origin.z + depth / 2);
+    this->origin = org;
+    this->color = cl;
 
-    Point org = origin;
+    Vector vdir3 = vdir1 ^vdir2;
 
-    faces[Front] = new CubeFace(face_dir1, face_dir2, -face_dir3, org, width, heigth, color);
+    this->faces[Back] = new CubeFace(vdir2, vdir1, org, w, l, cl);
+    this->faces[Left] = new CubeFace(vdir3, vdir2, org, d, w, cl);
+    this->faces[Bottom] = new CubeFace(vdir1, vdir3, org, l, d, cl);
 
-    faces[Left] = new CubeFace(face_dir2, face_dir3, -face_dir1, org, heigth, depth, color);
+    org.translate(l * vdir1 + w * vdir2 + d * vdir3);
 
-    faces[Bottom] = new CubeFace(face_dir3, face_dir1, -face_dir2, org, depth, width, color);
-
-    org.translate(width * face_dir1 + heigth * face_dir2 + depth * face_dir3);
-
-    faces[Top] = new CubeFace(-face_dir3, -face_dir1, face_dir2,  org, depth, width, color);
-
-    faces[Right] = new CubeFace(-face_dir3, -face_dir2, face_dir1, org, depth, heigth, color);
-
-    faces[Back] = new CubeFace(-face_dir1, -face_dir2, face_dir3, org, width, heigth, color);
+    this->faces[Front] = new CubeFace(-vdir1, -vdir2, org, l, w, cl);
+    this->faces[Right] = new CubeFace(-vdir2, -vdir3, org, w, d, cl);
+    this->faces[Top] = new CubeFace(-vdir3, -vdir1, org, d, l, cl);
 }
 
 void Cuboid::update(double delta_t)
@@ -40,10 +36,10 @@ void Cuboid::update(double delta_t)
 
 void Cuboid::render()
 {
-    for (int i = 0; i < 6; i++)
+    for (auto & face : faces)
     {
         glPushMatrix();
-        faces[i]->render();
+        face->render();
         glPopMatrix();
     }
 }

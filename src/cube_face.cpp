@@ -3,11 +3,10 @@
 #include "cube_face.h"
 
 
-CubeFace::CubeFace(Vector v1, Vector v2, Vector n, Point org, double l, double w, Color cl)
+CubeFace::CubeFace(Vector v1, Vector v2, Point org, double l, double w, Color cl)
 {
     vdir1 = 1.0 / v1.norm() * v1;
     vdir2 = 1.0 / v2.norm() * v2;
-    normal = 1.0 / n.norm() * n;
     anim.setPos(org);
     length = l;
     width = w;
@@ -84,12 +83,12 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     
     if (collides_h1)
     {
-        correction = std::abs(sphere.getRadius() - d_h1_to_sph) * h1_to_sph;
+        correction = std::abs(sphere.getRadius() - d_h1_to_sph) * 0;// * h1_to_sph;
     }
 
     if (collides_h2)
     {
-        correction = std::abs(sphere.getRadius() - d_h2_to_sph) * h2_to_sph;
+        correction = std::abs(sphere.getRadius() - d_h2_to_sph) * 0; //* h2_to_sph;
     }
 
     if (collides_face || collides_h1 || collides_h2)
