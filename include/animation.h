@@ -7,7 +7,7 @@
 class Animation
 {
 private:
-    double phi, theta; // Azimuthal and polar angles for local coordinate system orientation
+    double phi, theta; // Azimuthal and polar angles for local coordinate system orientation in rad
     Vector acc, spd; //  Instantaneous acceleration and speed
     Point pos; // Instantaneous position of the local coordinate system origin
 

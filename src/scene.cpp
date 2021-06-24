@@ -23,7 +23,6 @@ void Scene::render(const Point &cam_pos, float angle) const
     // Isometric view
     //glRotated(-45, 0, 1, 0);
     //glRotated(30, 1, 0, -1);
-
     glRotated(angle, 0, 1, 0);
 
     // X, Y and Z axis
