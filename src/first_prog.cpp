@@ -18,7 +18,6 @@
 #include "scene.h"
 
 
-
 int main(int argc, char *args[])
 {
     // The window we'll be rendering to
@@ -155,10 +154,17 @@ int main(int argc, char *args[])
 
         // Texture //////////////////////////////////////////////////////////
         GLuint texMarble, texField, texGrey, texBackground;
-        img2GLuint(texMarble, "../images/bille_2.jpg");
-        img2GLuint(texField, "../images/terrain.jpg");
-        img2GLuint(texGrey, "../images/gris.jpg");
-        img2GLuint(texBackground, "../images/fond.jpg");
+        #ifdef __linux__
+            img2GLuint(texMarble, "../images/bille_2.jpg");
+            img2GLuint(texField, "../images/plateau_2.jpg");
+            img2GLuint(texGrey, "../images/gris.jpg");
+            img2GLuint(texBackground, "../images/fond.jpg");
+        #elif _WIN32
+            img2GLuint(texMarble, "images\\bille_2.jpg");
+            img2GLuint(texField, "images\\plateau_2.jpg");
+            img2GLuint(texGrey, "images\\gris.jpg");
+            img2GLuint(texBackground, "images\\fond.jpg");
+        #endif
         // Textures ready to be enable (private member of each form) ///////
 
 

@@ -12,6 +12,7 @@ void Scene::render(const Point &cam_pos, float angle) const
 {
     // Clear color buffer and Z-Buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.12, 0.12, 0.12, 0.0);
 
     // Initialize Modelview Matrix
     glMatrixMode(GL_MODELVIEW);
@@ -20,14 +21,12 @@ void Scene::render(const Point &cam_pos, float angle) const
     // Set the camera position and parameters
     gluLookAt(cam_pos.x, cam_pos.y, cam_pos.z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-    // Isometric view
-    //glRotated(-45, 0, 1, 0);
-    //glRotated(30, 1, 0, -1);
+    glRotated(20,1,0,0);
     glRotated(angle, 0, 1, 0);
 
-    // X, Y and Z axis
+  /* Render the coordinates system
     glPushMatrix(); // Preserve the camera viewing point for further forms
-    // Render the coordinates system
+    
     glBegin(GL_LINES);
     {
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -42,6 +41,7 @@ void Scene::render(const Point &cam_pos, float angle) const
     }
     glEnd();
     glPopMatrix(); // Restore the camera viewing point for next object
+    */
 
     glPushMatrix();
     glRotated(alpha, 1, 0, 0);
