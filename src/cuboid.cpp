@@ -15,7 +15,7 @@ Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Co
     this->depth = d;
 
     this->origin = org;
-    this->color = cl;
+    this->col = cl;
 
     Vector vdir3 = vdir1 ^vdir2;
 
@@ -30,16 +30,27 @@ Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Co
     this->faces[Top] = new CubeFace(-vdir3, -vdir1, org, d, l, cl);
 }
 
-void Cuboid::update(double delta_t)
-{
-}
+void Cuboid::update(double delta_t) {}
 
 void Cuboid::render()
 {
-    for (auto & face : faces)
+    for (auto &face : faces)
     {
         glPushMatrix();
         face->render();
         glPopMatrix();
+    }
+}
+
+void Cuboid::setTexture(GLuint textureId, int i)
+{
+    this->faces[i]->setTexture(textureId);
+}
+
+void Cuboid::setTexture(GLuint textureId)
+{
+    for (auto &face : this->faces)
+    {
+        face->setTexture(textureId);
     }
 }

@@ -29,16 +29,27 @@ void CubeFace::render()
     p3.translate(width * vdir2);
     p4.translate(width * vdir2);
 
+    // Autorisation de la texture choisie a la creation de la face (cf main())
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
     Form::render();
 
     glBegin(GL_QUADS);
     {
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3d(p1.x, p1.y, p1.z);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3d(p2.x, p2.y, p2.z);
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3d(p3.x, p3.y, p3.z);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3d(p4.x, p4.y, p4.z);
     }
     glEnd();
+
+    // Ne plus appliquer la texture pour la suite
+    glDisable(GL_TEXTURE_2D);
 }
 
 bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
@@ -74,9 +85,7 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     bool collides_h1 = std::abs(d_h1_to_sph) <= sphere.getRadius();
     bool collides_h2 = std::abs(d_h2_to_sph) <= sphere.getRadius();
 
-
     Vector correction;
-    Vector speed = sphere.getAnim().getSpeed();
 
     if (collides_face)
     {
@@ -86,12 +95,14 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     {
         if (collides_h1)
         {
-            correction = std::abs(sphere.getRadius() - d_h1_to_sph) * speed * (-1.0 / speed.norm());
+            Vector vc1 = h1_to_sph * Vector(1, 0, 0) * Vector(1, 0, 0) + h1_to_sph * Vector(0, 0, 1) * Vector(0, 0, 1);
+            correction = std::abs(sphere.getRadius() - d_h1_to_sph) * vc1;
         }
 
         if (collides_h2)
         {
-            correction = std::abs(sphere.getRadius() - d_h2_to_sph) * speed * (-1.0 / speed.norm());
+            Vector vc2 = h2_to_sph * Vector(1, 0, 0) * Vector(1, 0, 0) + h2_to_sph * Vector(0, 0, 1) * Vector(0, 0, 1);
+            correction = std::abs(sphere.getRadius() - d_h2_to_sph) * vc2;
         }
     }
 
@@ -103,14 +114,36 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
         sphere.getAnim().setPos(new_pos);
 
         // modifying sphere speed
+        Vector vI = sphere.getAnim().getSpeed();
+        Vector vS;
+        double A = 1;
+
+        Vector normal;
         if (collides_face)
         {
-            sphere.getAnim().setSpeed(speed - 2 * (speed * this->getNormal()) * this->getNormal() * 0.95);
+            normal = this->getNormal();
+            double K = 0.65;
+            // F = cos(incident angle)
+            double F = std::abs(this->getNormal() * (vI * (1.0 / vI.norm())));
+            // (K - 1) * cos(incident angle) + 1
+            // no attenuation when the incident angle equals 90 degrees.
+            A = (K - 1) * F + 1;
+        }
+        else if (collides_h1)
+        {
+            normal = this->getNormal() - (horizontal * (1.0 / horizontal.norm()));
+            normal = normal * (1.0 / normal.norm());
         }
         else
         {
-            sphere.getAnim().setSpeed(-speed);
+            normal = this->getNormal() + (horizontal * (1.0 / horizontal.norm()));
+            normal = normal * (1.0 / normal.norm());
         }
+
+        vS = vI - 2 * (vI * normal) * normal;
+        vS = vS * A;
+
+        sphere.getAnim().setSpeed(vS);
 
         return true;
     }

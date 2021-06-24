@@ -18,7 +18,7 @@ void Form::render()
 
     //Vector n(org.z,0.0,-org.x);
     //Vector n(sin(this->anim.phi),0,0);
-   // glRotated(this->anim.getTheta(), n.x, n.y, n.z);
+    // glRotated(this->anim.getTheta(), n.x, n.y, n.z);
     glTranslated(org.x, org.y, org.z);
     glColor3f(col.r, col.g, col.b);
 }

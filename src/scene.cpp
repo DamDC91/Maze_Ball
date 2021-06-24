@@ -72,11 +72,11 @@ void Scene::render(const Point &cam_pos, float angle) const
 void Scene::update(double delta_t)
 {
     this->floor->update(delta_t);
-    for (auto & wall : this->walls)
+    for (auto &wall : this->walls)
     {
         wall->update(delta_t);
     }
-    for (auto & sphere : this->spheres)
+    for (auto &sphere : this->spheres)
     {
         sphere->update(delta_t, this->alpha, this->beta);
     }

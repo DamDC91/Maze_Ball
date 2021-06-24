@@ -10,6 +10,7 @@ class CubeFace : public Form
 private:
     Vector vdir1, vdir2;
     double length, width;
+
 public:
     CubeFace(Vector v1 = Vector(1, 0, 0), Vector v2 = Vector(0, 0, 1),
              Point org = Point(), double l = 1.0, double w = 1.0,
@@ -27,5 +28,4 @@ public:
 
     bool collisionSphere(Sphere &sphere, Vector floor_normal);
 
-    void setColor(Color color) { this->col = color; };
 };
