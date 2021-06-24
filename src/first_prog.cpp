@@ -294,64 +294,64 @@ int main(int argc, char *args[])
         double off_x = -floor_length / 2;
         double off_z = -floor_width / 2;
         double off_y = floor_depth / 2;
-        double u = floor_width / 5;
+        Vector u = Vector(floor_length / 5, wall_height, floor_width / 5);
 
-        Wall *maze1 = new Wall(Point(0 * u + off_x, 0 * u + off_y, 1 * u + off_z),
+        Wall *maze1 = new Wall(Point(0 * u.x + off_x, 0 * u.y + off_y, 1 * u.z + off_z),
                                Vector(1, 0, 0),
                                Vector(0, 1, 0),
-                               1 * u, wall_height, wall_thickness, wall_color);
+                               1 * u.x, wall_height, wall_thickness, wall_color);
         walls.push_back(maze1);
 
-        Wall *maze2 = new Wall(Point(1 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+        Wall *maze2 = new Wall(Point(1 * u.x + off_x, 0 * u.y + off_y, 2 * u.z + off_z),
                                Vector(1, 0, 0),
                                Vector(0, 1, 0),
-                               1 * u, wall_height, wall_thickness, wall_color);
+                               1 * u.x, wall_height, wall_thickness, wall_color);
         walls.push_back(maze2);
 
-        Wall *maze3 = new Wall(Point(2 * u + off_x, 0 * u + off_y, 1 * u + off_z),
+        Wall *maze3 = new Wall(Point(2 * u.x + off_x, 0 * u.y + off_y, 1 * u.z + off_z),
                                Vector(1, 0, 0),
                                Vector(0, 1, 0),
-                               1 * u, wall_height, wall_thickness, wall_color);
+                               1 * u.x, wall_height, wall_thickness, wall_color);
         walls.push_back(maze3);
 
-        Wall *maze4 = new Wall(Point(3 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+        Wall *maze4 = new Wall(Point(3 * u.x + off_x, 0 * u.y + off_y, 2 * u.z + off_z),
                                Vector(1, 0, 0),
                                Vector(0, 1, 0),
-                               1 * u, wall_height, wall_thickness, wall_color);
+                               1 * u.x, wall_height, wall_thickness, wall_color);
         walls.push_back(maze4);
 
-        Wall *maze5 = new Wall(Point(1 * u + off_x, 0 * u + off_y, 3 * u + off_z),
+        Wall *maze5 = new Wall(Point(1 * u.x + off_x, 0 * u.y + off_y, 3 * u.z + off_z),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               2 * u, wall_height, wall_thickness, wall_color);
+                               2 * u.z, wall_height, wall_thickness, wall_color);
         walls.push_back(maze5);
 
-        Wall *maze6 = new Wall(Point(3 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+        Wall *maze6 = new Wall(Point(3 * u.x + off_x, 0 * u.y + off_y, 2 * u.z + off_z),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               2 * u, wall_height, wall_thickness, wall_color);
+                               2 * u.z, wall_height, wall_thickness, wall_color);
         walls.push_back(maze6);
 
-        Wall *maze7 = new Wall(Point(4 * u + off_x, 0 * u + off_y, 3 * u + off_z),
+        Wall *maze7 = new Wall(Point(4 * u.x + off_x, 0 * u.y + off_y, 3 * u.z + off_z),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               2 * u, wall_height, wall_thickness, wall_color);
+                               2 * u.z, wall_height, wall_thickness, wall_color);
         walls.push_back(maze7);
 
-        Wall *maze8 = new Wall(Point(4 * u + off_x, 0 * u + off_y, 0 * u + off_z),
+        Wall *maze8 = new Wall(Point(4 * u.x + off_x, 0 * u.y + off_y, 0 * u.z + off_z),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               2 * u, wall_height, wall_thickness, wall_color);
+                               2 * u.z, wall_height, wall_thickness, wall_color);
         walls.push_back(maze8);
 
-        Wall *maze9 = new Wall(Point(2 * u + off_x, 0 * u + off_y, 0 * u + off_z),
+        Wall *maze9 = new Wall(Point(2 * u.x + off_x, 0 * u.y + off_y, 0 * u.z + off_z),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
-                               4 * u, wall_height, wall_thickness, wall_color);
+                               4 * u.z, wall_height, wall_thickness, wall_color);
         walls.push_back(maze9);
 
         double radius = 0.2;
-        Sphere *sphere = new Sphere(radius, Point(u / 2 + off_x, off_y + radius, u / 2 + off_z), marble_color);
+        Sphere *sphere = new Sphere(radius, Point(u.x / 2 + off_x, off_y + radius, u.z / 2 + off_z), marble_color);
 
         Scene scene;
         scene.setFloor(floor);
