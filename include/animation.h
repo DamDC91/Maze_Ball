@@ -12,7 +12,7 @@ private:
     Point pos; // Instantaneous position of the local coordinate system origin
 
 public:
-    Animation(double ph = 0.0, double th = 0.0,
+    explicit Animation(double ph = 0.0, double th = 0.0,
               Vector accel = Vector(0.0, 0.0, 0.0),
               Vector speed = Vector(0.0, 0.0, 0.0),
               Point p = Point(0.0, 0.0, 0.0)
