@@ -10,17 +10,17 @@ private:
     // => no center required here, information is stored in the anim object
     double radius;
 public:
-    Sphere(double r = 1.0, Point org = Point(), Color cl = Color());
+    explicit Sphere(double r = 1.0, Point org = Point(), Color cl = Color());
 
-    Sphere(double r = 1.0, Color cl = Color());
+    explicit Sphere(double r = 1.0, Color cl = Color());
 
     double getRadius() const { return radius; }
 
     void setRadius(double r) { radius = r; }
 
-    void update(double delta_t);
+    void update(double delta_t) override;
 
-    void render();
+    void render() override;
 
     void update(double delta_t, double alpha, double beta);
 };

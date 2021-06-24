@@ -4,6 +4,7 @@
 #include <floor.h>
 #include <wall.h>
 #include <sphere.h>
+#include <utility>
 #include <vector>
 
 
@@ -19,11 +20,11 @@ public:
 
     Scene();
 
-    void SetWalls(std::vector<Wall *> walls) { this->walls = walls; };
+    void SetWalls(std::vector<Wall *> newWalls) { this->walls = std::move(newWalls); };
 
-    void setFloor(Floor *floor) { this->floor = floor; };
+    void setFloor(Floor *newFloor) { this->floor = newFloor; };
 
-    void setSpheres(std::vector<Sphere *> spheres) { this->spheres = spheres; };
+    void setSpheres(std::vector<Sphere *> newSpheres) { this->spheres = std::move(newSpheres); };
 
     void addWall(Wall *wall) { this->walls.push_back(wall); };
 

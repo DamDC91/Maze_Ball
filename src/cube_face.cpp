@@ -69,7 +69,7 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
     }
 
     Point face_h1 = this->anim.getPos();
-    Point face_h2 = {face_h1.x + horizontal.x, face_h1.y + horizontal.y, face_h1.z + horizontal.z};
+    Point face_h2 = Point(face_h1.x + horizontal.x, face_h1.y + horizontal.y, face_h1.z + horizontal.z);
 
     Vector h1_to_sph = Vector(face_h1, sphere.getAnim().getPos());
     Vector h2_to_sph = Vector(face_h2, sphere.getAnim().getPos());

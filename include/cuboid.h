@@ -24,13 +24,13 @@ public:
         Bottom = 5
     };
 
-    Cuboid(Vector v1 = Vector(1, 0, 0), Vector v2 = Vector(0, 0, 1),
+    explicit Cuboid(Vector v1 = Vector(1, 0, 0), Vector v2 = Vector(0, 0, 1),
            Point org = Point(), double l = 1.0, double w = 1.0, double d = 1.0,
            Color cl = Color());
 
-    void update(double delta_t);
+    void update(double delta_t) override;
 
-    void render();
+    void render() override;
 
     Vector getNormal() { return vdir1 ^ vdir2; }
 
