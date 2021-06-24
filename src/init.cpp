@@ -5,15 +5,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
 #include "init.h"
-/***************************************************************************/
-/* Constants and functions declarations                                    */
-/***************************************************************************/
-// Screen dimension constants
 
-
-/***************************************************************************/
-/* Functions implementations                                               */
-/***************************************************************************/
 bool init(SDL_Window **window, SDL_GLContext *context)
 {
     // Initialization flag

@@ -2,10 +2,11 @@
 #include <vector>
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
 
+#include "init.h"
 // Module for space geometry
 #include "geometry.h"
 // Module for generating and rendering forms
@@ -14,13 +15,10 @@
 #include "cuboid.h"
 #include "wall.h"
 #include "floor.h"
-
 #include "scene.h"
-#include "init.h"
 
-/***************************************************************************/
-/* MAIN Function                                                           */
-/***************************************************************************/
+
+
 int main(int argc, char *args[])
 {
     // The window we'll be rendering to
@@ -76,20 +74,12 @@ int main(int argc, char *args[])
                               Vector(0, 1, 0),
                               floor_width - 2 * wall_thickness, wall_height, wall_thickness, wall_color);
 
-//        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, floor_width / 2),
-//                              Vector(0, 0, -1),
-//                              Vector(0, 1, 0),
-//                              floor_width, wall_height, wall_thickness, wall_color);
 
         Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, (-floor_width / 2) + wall_thickness),
                                Vector(0, 0, 1),
                                Vector(0, 1, 0),
                                floor_width - 2 * wall_thickness, wall_height, wall_thickness, wall_color);
 
-//        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, -floor_width / 2),
-//                               Vector(0, 0, 1),
-//                               Vector(0, 1, 0),
-//                               floor_width, wall_height, wall_thickness, wall_color);
 
         std::vector<Wall *> walls = {back, front, left, right};
 
@@ -171,6 +161,7 @@ int main(int argc, char *args[])
         img2GLuint(texBackground, "../images/fond.jpg");
         // Textures ready to be enable (private member of each form) ///////
 
+
         floor->setTexture(texGrey);
         floor->setTexture(texField, Cuboid::Front);
         sphere->setTexture(texMarble);
@@ -218,6 +209,12 @@ int main(int argc, char *args[])
                             case SDLK_p:
                                 camera_position.y -= 0.3;
                                 break;
+                            case SDLK_l:
+                                angle += 1;
+                                break;
+                            case SDLK_m:
+                                angle -= 1;
+                                break;
                             case SDLK_UP:
                                 scene.decAlpha();
                                 break;
@@ -230,7 +227,6 @@ int main(int argc, char *args[])
                             case SDLK_RIGHT:
                                 scene.decBeta();
                                 break;
-
                             default:
                                 break;
                         }

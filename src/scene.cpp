@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Scene::Scene() : alpha(0.0), beta(0.0), inc(0.1)
+Scene::Scene() : alpha(0.0), beta(0.0), inc(0.4)
 {
     floor = nullptr;
 }
