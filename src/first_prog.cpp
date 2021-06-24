@@ -127,7 +127,7 @@ bool initGL()
 
     // Activate Z-Buffer
     glEnable(GL_DEPTH_TEST);
-
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     // Lighting basic configuration and activation
     const GLfloat light_ambient[] = {0.3f, 0.3f, 0.3f, 1.0f};
     const GLfloat light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};

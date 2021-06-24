@@ -2,6 +2,7 @@
 #define GEOMETRY_H_INCLUDED
 
 #include <iostream>
+#include <cmath>
 
 
 class Coordinates
@@ -42,6 +43,8 @@ public:
 
     // Compute the vector norm
     double norm();
+
+    bool is_valid() { return !(std::isnan(this->x) || std::isnan(this->y) || std::isnan(this->z)); }
 
     Vector integral(double delta_t);
 

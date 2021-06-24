@@ -1,5 +1,6 @@
 #include <GL/glu.h>
-#include "sphere.h"
+#include <animation.h>
+#include <sphere.h>
 #include <matrix.h>
 #include <cmath>
 
@@ -7,8 +8,13 @@
 Sphere::Sphere(double r, Point org, Color cl)
 {
     radius = r;
-    anim.setPos(org);
+    anim = Animation(0.0, 0.0, Vector(0.0, 0.0, 0.0), Vector(0.0, 0.0, 0.0), org);
     col = cl;
+}
+
+Sphere::Sphere(double r, Color cl) : Sphere(r, Point(), cl) 
+{
+
 }
 
 
@@ -40,6 +46,40 @@ void Sphere::update(double delta_t, double alpha, double beta)
     P.y = P.y + V.y;
     P.z = P.z + V.z;
     this->anim.setPos(P);
+
+
+
+    //angular speed
+    double angular_speed = this->anim.getSpeed().norm() / this->radius; // rad / s
+    double delta_angle = delta_t * angular_speed; // rad
+        
+    // axe of rotation
+    Vector axe = this->anim.getSpeed() ^ Vector(0,1,0);
+    axe = 1.0/axe.norm() * axe;
+
+    double theta = this->anim.getTheta()*M_PI/180.0; // rad
+    double phi = this->anim.getPhi()*M_PI/180.0;     //rad
+
+    std::cout << "theta " << this->anim.getTheta() << std::endl;
+    std::cout << "phi " << this->anim.getPhi() << std::endl;
+
+    //conversion in cartesian
+    //Vector s = Vector(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
+
+    Vector s = Vector(cos(phi), sin(phi)*cos(theta), sin(phi)*sin(theta));
+
+    //rotation
+    s=rotate_u(s,axe,delta_angle);
+    if (s.is_valid())
+    {
+        //conversion in spheric
+        theta = acos(s.z);
+        phi = atan2(s.y,s.x);
+
+        this->anim.setPhi(phi*180.0/M_PI);
+        this->anim.setTheta(theta*180.0/M_PI*180.0/M_PI);
+    }
+
 }
 
 
@@ -49,9 +89,9 @@ void Sphere::render()
 
     quad = gluNewQuadric();
 
-    // Complete this part
     Form::render();
-    gluSphere(quad, this->radius, 100, 20);
+
+    gluSphere(quad, this->radius, 6, 20);
 
     gluDeleteQuadric(quad);
 }

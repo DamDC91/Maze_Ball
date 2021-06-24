@@ -101,7 +101,7 @@ bool CubeFace::collisionSphere(Sphere &sphere, Vector floor_normal)
 
         // modifying sphere speed
         Vector speed = sphere.getAnim().getSpeed();
-        sphere.getAnim().setSpeed(speed - 2 * (speed * this->getNormal()) * this->getNormal() * 0.95);
+        sphere.getAnim().setSpeed(speed - 2 * (speed * this->getNormal()) * this->getNormal() * 0.90);
 
         return true;
     }
