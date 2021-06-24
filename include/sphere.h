@@ -2,7 +2,6 @@
 
 #include "forms.h"
 
-
 // A particular Form
 class Sphere : public Form
 {
@@ -13,7 +12,7 @@ private:
 public:
     Sphere(double r = 1.0, Point org = Point(), Color cl = Color());
 
-    Sphere(double r = 1.0, Color cl = Color()) : Sphere(r, Point(), cl) {};
+    Sphere(double r = 1.0, Color cl = Color());
 
     double getRadius() const { return radius; }
 

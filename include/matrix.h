@@ -41,5 +41,6 @@ Vector rotate_x(Vector const &vec, double theta);
 Vector rotate_y(Vector const &vec, double theta);
 
 Vector rotate_z(Vector const &vec, double theta);
+Vector rotate_u(Vector const &vec, Vector const &u, double theta);
 
 #endif //MATRIX_H_INCLUDED

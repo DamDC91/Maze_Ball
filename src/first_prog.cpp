@@ -126,7 +126,6 @@ bool initGL()
 
     // Activate Z-Buffer
     glEnable(GL_DEPTH_TEST);
-
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); // TO DISPLAY IN WIREFRAME MODE
 
     // Lighting basic configuration and activation

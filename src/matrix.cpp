@@ -82,3 +82,16 @@ Vector rotate_z(Vector const &vec, double theta)
 {
     return z_rotation(theta) * vec;
 }
+
+Vector rotate_u(Vector const &vec, Vector const &u, double theta)
+{
+
+    double c = cos(theta);
+    double s = sin(theta);
+    Matrix *R = new Matrix({ u.x*u.x*(1-c)+c,     u.x*u.y*(1-c)-u.z*s,  u.x*u.z*(1-c)+u.y*s,
+                 u.x*u.y*(1-c)+u.z*s, u.y*u.y*(1-c)+c,      u.y*u.z*(1-c)-u.x*s,
+                 u.x*u.z*(1-c)-u.y*s, u.y*u.z*(1-c)+u.x*s,  u.z*u.z*(1-c)+c});
+
+    return (*R)*vec;
+    //return Vector(0,0,0);
+}
