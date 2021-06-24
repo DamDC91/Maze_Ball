@@ -4,6 +4,7 @@ project(ProjetTransverse)
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED) # https://stackoverflow.com/questions/52813560/i-have-libsdl2-image-dev-installed-via-apt-get-but-cmake-cannot-find-it
 find_package(OpenGL REQUIRED)
 
 #Can manually add the sources using the set command as follows:
@@ -31,5 +32,5 @@ file(GLOB SOURCES_CPP "./src/*.cpp")
 # They can be safely be removed after
 add_executable(${PROJECT_NAME} ${SOURCES_CPP})
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE "./include")

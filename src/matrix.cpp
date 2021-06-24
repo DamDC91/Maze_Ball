@@ -70,17 +70,17 @@ Matrix z_rotation(double theta)
 
 Vector rotate_x(Vector const &vec, double theta)
 {
-    return x_rotation(theta)*vec;
+    return x_rotation(theta) * vec;
 }
 
 Vector rotate_y(Vector const &vec, double theta)
 {
-    return y_rotation(theta)*vec;
+    return y_rotation(theta) * vec;
 }
 
 Vector rotate_z(Vector const &vec, double theta)
 {
-    return z_rotation(theta)*vec;
+    return z_rotation(theta) * vec;
 }
 
 Vector rotate_u(Vector const &vec, Vector const &u, double theta)

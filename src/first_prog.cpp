@@ -1,8 +1,8 @@
 // Using SDL, SDL OpenGL and standard IO
 #include <vector>
 #include <iostream>
-#include <cmath>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
 
@@ -11,7 +11,6 @@
 // Module for generating and rendering forms
 #include "forms.h"
 #include "sphere.h"
-#include "cube_face.h"
 #include "cuboid.h"
 #include "wall.h"
 #include "floor.h"
@@ -116,7 +115,7 @@ bool initGL()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Fix aspect ratio and depth clipping planes
-    gluPerspective(40.0, (GLdouble)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
+    gluPerspective(40.0, (GLdouble) SCREEN_WIDTH / SCREEN_HEIGHT, 1.0, 100.0);
 
     // Initialize Modelview Matrix
     glMatrixMode(GL_MODELVIEW);
@@ -127,7 +126,8 @@ bool initGL()
 
     // Activate Z-Buffer
     glEnable(GL_DEPTH_TEST);
-    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); // TO DISPLAY IN WIREFRAME MODE
+
     // Lighting basic configuration and activation
     const GLfloat light_ambient[] = {0.3f, 0.3f, 0.3f, 1.0f};
     const GLfloat light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -176,6 +176,46 @@ void close(SDL_Window **window)
     SDL_Quit();
 }
 
+void img2GLuint(GLuint &textureID, const char * imgFile)
+{
+    SDL_Surface *imgsurf = IMG_Load(imgFile);
+    if (imgsurf == nullptr)
+    {
+        printf("Failed to load texture image!\n");
+        return;
+    }
+    // work out what format to tell glTexImage2D to use...
+    int mode;
+    if (imgsurf->format->BytesPerPixel == 3)
+    { // RGB 24bit
+        mode = GL_RGB;
+    }
+    else if (imgsurf->format->BytesPerPixel == 4)
+    { // RGBA 32bit
+        mode = GL_RGBA;
+    }
+    else
+    {
+        SDL_FreeSurface(imgsurf);
+        return;
+    }
+    // create one texture name
+    glGenTextures(1, &textureID);
+
+    // tell opengl to use the generated texture name
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // this reads from the sdl imgsurf and puts it into an opengl texture
+    glTexImage2D(GL_TEXTURE_2D, 0, mode, imgsurf->w, imgsurf->h, 0, mode, GL_UNSIGNED_BYTE, imgsurf->pixels);
+
+    // these affect how this texture is drawn later on...
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // clean up
+    SDL_FreeSurface(imgsurf);
+}
+
 /***************************************************************************/
 /* MAIN Function                                                           */
 /***************************************************************************/
@@ -204,34 +244,148 @@ int main(int argc, char *args[])
         // Camera position
         Point camera_position(0, 0.0, 8.0);
 
-        Floor *floor = new Floor(Point(-2.5, -0.25, 2.5), 5 * Vector(1, 0, 0), 0.5 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), Vector(0, 1, 0), RED);
+        double floor_length = 5;
+        double floor_width = 5;
+        double floor_depth = 0.5;
+        double wall_thickness = 0.1; // thickness
+        double wall_height = 0.3; // height
+        Color wall_color = WHITE;
+        Color floor_color = WHITE;
+        Color marble_color = WHITE;
 
-        Wall *wall1 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, -1), BLUE);
+        Floor *floor = new Floor(Point(-floor_length / 2, -floor_depth / 2, floor_width / 2),
+                                 Vector(1, 0, 0),
+                                 Vector(0, 0, -1),
+                                 floor_length, floor_width, floor_depth, floor_color);
 
-        Wall *wall2 = new Wall(Point(-2.5, 0.25, 2.5), 0.1 * Vector(0, 0, -1), 0.3 * Vector(0, 1, 0), 5 * Vector(1, 0, 0), BLUE);
+        // walls normals are pointing toward the center of the floor
+        Wall *back = new Wall(Point(-floor_length / 2, floor_depth / 2, -floor_width / 2),
+                              Vector(1, 0, 0),
+                              Vector(0, 1, 0),
+                              floor_length, wall_height, wall_thickness, wall_color);
 
-        Wall *wall3 = new Wall(Point(2.5, 0.25, -2.5), 0.1 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 5 * Vector(0, 0, 1), BLUE);
+        Wall *front = new Wall(Point(floor_length / 2, floor_depth / 2, floor_width / 2),
+                               Vector(-1, 0, 0),
+                               Vector(0, 1, 0),
+                               floor_length, wall_height, wall_thickness, wall_color);
 
-        Wall *wall4 = new Wall(Point(2.5, 0.25, -2.5), 5 * Vector(-1, 0, 0), 0.3 * Vector(0, 1, 0), 0.1 * Vector(0, 0, 1), BLUE);
+        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, (floor_width / 2) - wall_thickness),
+                              Vector(0, 0, -1),
+                              Vector(0, 1, 0),
+                              floor_width - 2 * wall_thickness, wall_height, wall_thickness, wall_color);
 
-        Sphere *sphere = new Sphere(0.2, Point(0, 0.25 + 0.2, 0.0), YELLOW);
+//        Wall *left = new Wall(Point(-floor_length / 2, floor_depth / 2, floor_width / 2),
+//                              Vector(0, 0, -1),
+//                              Vector(0, 1, 0),
+//                              floor_width, wall_height, wall_thickness, wall_color);
+
+        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, (-floor_width / 2) + wall_thickness),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               floor_width - 2 * wall_thickness, wall_height, wall_thickness, wall_color);
+
+//        Wall *right = new Wall(Point(floor_length / 2, floor_depth / 2, -floor_width / 2),
+//                               Vector(0, 0, 1),
+//                               Vector(0, 1, 0),
+//                               floor_width, wall_height, wall_thickness, wall_color);
+
+        std::vector<Wall *> walls = {back, front, left, right};
+
+        double off_x = -floor_length / 2;
+        double off_z = -floor_width / 2;
+        double off_y = floor_depth / 2;
+        double u = floor_width / 5;
+
+        Wall *maze1 = new Wall(Point(0 * u + off_x, 0 * u + off_y, 1 * u + off_z),
+                               Vector(1, 0, 0),
+                               Vector(0, 1, 0),
+                               1 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze1);
+
+        Wall *maze2 = new Wall(Point(1 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+                               Vector(1, 0, 0),
+                               Vector(0, 1, 0),
+                               1 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze2);
+
+        Wall *maze3 = new Wall(Point(2 * u + off_x, 0 * u + off_y, 1 * u + off_z),
+                               Vector(1, 0, 0),
+                               Vector(0, 1, 0),
+                               1 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze3);
+
+        Wall *maze4 = new Wall(Point(3 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+                               Vector(1, 0, 0),
+                               Vector(0, 1, 0),
+                               1 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze4);
+
+        Wall *maze5 = new Wall(Point(1 * u + off_x, 0 * u + off_y, 3 * u + off_z),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               2 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze5);
+
+        Wall *maze6 = new Wall(Point(3 * u + off_x, 0 * u + off_y, 2 * u + off_z),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               2 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze6);
+
+        Wall *maze7 = new Wall(Point(4 * u + off_x, 0 * u + off_y, 3 * u + off_z),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               2 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze7);
+
+        Wall *maze8 = new Wall(Point(4 * u + off_x, 0 * u + off_y, 0 * u + off_z),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               2 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze8);
+
+        Wall *maze9 = new Wall(Point(2 * u + off_x, 0 * u + off_y, 0 * u + off_z),
+                               Vector(0, 0, 1),
+                               Vector(0, 1, 0),
+                               4 * u, wall_height, wall_thickness, wall_color);
+        walls.push_back(maze9);
+
+        double radius = 0.2;
+        Sphere *sphere = new Sphere(radius, Point(u / 2 + off_x, off_y + radius, u / 2 + off_z), marble_color);
 
         Scene scene;
         scene.setFloor(floor);
-        scene.SetWalls(std::vector<Wall *>{wall1, wall2, wall3, wall4});
+        scene.SetWalls(walls);
         scene.setSpheres(std::vector<Sphere *>{sphere});
 
         float angle = 0.0;
 
+
+        // Texture //////////////////////////////////////////////////////////
+        GLuint texMarble, texField, texGrey, texBackground;
+        img2GLuint(texMarble, "../images/bille_2.jpg");
+        img2GLuint(texField, "../images/terrain.jpg");
+        img2GLuint(texGrey, "../images/gris.jpg");
+        img2GLuint(texBackground, "../images/fond.jpg");
+        // Textures ready to be enable (private member of each form) ///////
+
+        floor->setTexture(texGrey);
+        floor->setTexture(texField, Cuboid::Front);
+        sphere->setTexture(texMarble);
+        for (auto & wall : walls)
+        {
+            wall->setTexture(texGrey);
+        }
+
         // Get first "current time"
         previous_time = SDL_GetTicks();
         unsigned int time = SDL_GetTicks();
-        unsigned int last_time=0;
+        unsigned int last_time = 0;
         // While application is running
         while (!quit)
         {
             time = SDL_GetTicks();
-          //  angle += 0.04;
+            //  angle += 0.04;
 
             // Handle events on queue
             while (SDL_PollEvent(&event) != 0)
@@ -241,46 +395,46 @@ int main(int argc, char *args[])
 
                 switch (event.type)
                 {
-                // User requests quit
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-                case SDL_KEYDOWN:
-                    // Handle key pressed with current mouse position
-                    SDL_GetMouseState(&x, &y);
-
-                    switch (key_pressed)
-                    {
-                    // Quit the program when 'q' or Escape keys are pressed
-                    case SDLK_q:
-                    case SDLK_ESCAPE:
+                    // User requests quit
+                    case SDL_QUIT:
                         quit = true;
                         break;
-                    case SDLK_o:
-                        camera_position.y += 0.3;
-                        break;
-                    case SDLK_p:
-                        camera_position.y -= 0.3;
-                        break;
-                    case SDLK_UP:
-                        scene.decAlpha();
-                        break;
-                    case SDLK_DOWN:
-                        scene.incAlpha();
-                        break;
-                    case SDLK_LEFT:
-                        scene.incBeta();
-                        break;
-                    case SDLK_RIGHT:
-                        scene.decBeta();
-                        break;
+                    case SDL_KEYDOWN:
+                        // Handle key pressed with current mouse position
+                        SDL_GetMouseState(&x, &y);
 
+                        switch (key_pressed)
+                        {
+                            // Quit the program when 'q' or Escape keys are pressed
+                            case SDLK_q:
+                            case SDLK_ESCAPE:
+                                quit = true;
+                                break;
+                            case SDLK_o:
+                                camera_position.y += 0.3;
+                                break;
+                            case SDLK_p:
+                                camera_position.y -= 0.3;
+                                break;
+                            case SDLK_UP:
+                                scene.decAlpha();
+                                break;
+                            case SDLK_DOWN:
+                                scene.incAlpha();
+                                break;
+                            case SDLK_LEFT:
+                                scene.incBeta();
+                                break;
+                            case SDLK_RIGHT:
+                                scene.decBeta();
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
-                    }
-                    break;
-                default:
-                    break;
                 }
             }
 
@@ -294,10 +448,10 @@ int main(int argc, char *args[])
                 scene.update(1e-3 * elapsed_time); // International system units : seconds
             }
 
-            if(1e-3 * time >= last_time + 1)
+            if (1e-3 * time >= last_time + 1)
             {
                 last_time = 1e-3 * time;
-                std::cout << last_time <<" s"<< std::endl;
+                std::cout << last_time << " s" << std::endl;
             }
 
             // Render the scene
