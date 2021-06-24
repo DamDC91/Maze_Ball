@@ -93,7 +93,7 @@ void Sphere::render()
     gluQuadricNormals(quad, GLU_SMOOTH);
 
 
-    gluSphere(quad, this->radius, 6, 20);
+    gluSphere(quad, this->radius, 20, 20);
 
     gluDeleteQuadric(quad);
 
