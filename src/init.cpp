@@ -140,7 +140,7 @@ void img2GLuint(GLuint &textureID, const char * imgFile)
     SDL_Surface *imgsurf = IMG_Load(imgFile);
     if (imgsurf == nullptr)
     {
-        printf("Failed to load texture image!\n");
+        std::cout << "Failed to load texture image!" << std::endl;
         return;
     }
     // work out what format to tell glTexImage2D to use...

@@ -36,4 +36,4 @@ void close(SDL_Window **window);
 //Loading texture
 void img2GLuint(GLuint &textureID, const char *imgFile);
 
-#endif
+#endif // INIT_H_INCLUDED
