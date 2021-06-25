@@ -24,24 +24,25 @@ void Scene::render(const Point &cam_pos, float angle) const
     glRotated(20,1,0,0);
     glRotated(angle, 0, 1, 0);
 
-  /* Render the coordinates system
-    glPushMatrix(); // Preserve the camera viewing point for further forms
-    
+    glPushMatrix();
     glBegin(GL_LINES);
     {
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(1, 0, 0);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 1, 0);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 0, 1);
+        glColor3f(1.0f, 0.0f, 0.5f);
+        glVertex3f(-2.5, 0, -2.5);
+        glVertex3f(-2.5, 0, 2.5);
+
+        glVertex3f(-2.5, 0, 2.5);
+        glVertex3f(2.5, 0, 2.5);
+
+        glVertex3f(2.5, 0, 2.5);
+        glVertex3f(2.5, 0, -2.5);
+
+        glVertex3f(2.5, 0, -2.5);
+        glVertex3f(-2.5, 0, -2.5);  
     }
     glEnd();
-    glPopMatrix(); // Restore the camera viewing point for next object
-    */
+    glPopMatrix();
+    
 
     glPushMatrix();
     glRotated(alpha, 1, 0, 0);
