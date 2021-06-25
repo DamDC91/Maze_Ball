@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WALL_H_INCLUDED
+#define WALL_H_INCLUDED
 
 #include "forms.h"
 #include "cube_face.h"
@@ -17,3 +18,5 @@ public:
 
     bool collisionSphere(Sphere &sphere, Vector const &floor_normal);
 };
+
+#endif

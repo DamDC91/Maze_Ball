@@ -15,6 +15,7 @@ Sphere::Sphere(double r, Point org, Color cl)
 Sphere::Sphere(double r, Color cl) : Sphere(r, Point(), cl) {}
 
 
+
 void Sphere::update(double delta_t)
 {
     // Complete this part
@@ -49,16 +50,14 @@ void Sphere::update(double delta_t, double alpha, double beta)
     double delta_angle = delta_t * angular_speed; // rad
 
     // axe of rotation
-    Vector axe = this->anim.getSpeed() ^Vector(0, 1, 0);
+    Vector axe = this->anim.getSpeed() ^ Vector(0, 1, 0);
     axe = 1.0 / axe.norm() * axe;
 
     double theta = this->anim.getTheta(); // rad
     double phi = this->anim.getPhi();     //rad
 
-   // std::cout << "theta " << this->anim.getTheta() << std::endl;
-   // std::cout << "phi " << this->anim.getPhi() << std::endl;
-
     //conversion in cartesian
+    //vector represented by the 2 spheric angle
     Vector s = Vector(sin(theta)*sin(phi), cos(theta), sin(theta)*cos(phi));
 
     glPushMatrix();
@@ -71,72 +70,31 @@ void Sphere::update(double delta_t, double alpha, double beta)
     glEnd();
     glPopMatrix();
 
-    //rotation
-   // std::cout <<"s :" << s << std::endl;
+    //s rotation
     s=rotate_u(s,axe,-delta_angle);
-    //std::cout <<"s :" << s << std::endl;
     if (s.is_valid())
     {
         //conversion in spheric
-        theta = acos(s.y);
-        
-        std::cout << s.x<<"/"<<s.z << "         y : "<<s.y << std::endl;
-       // if (abs(s.x) < 1e-9)
-       //     s.x = 0.0;
-   
+        theta = acos(s.y);   
         phi = atan2(s.x,s.z);
-        //phi=atan(s.y/s.x);
         if (phi < 0)
             phi = phi + 2* M_PI;
 
         this->anim.setPhi(phi);
         this->anim.setTheta(theta);
-        std::cout << "Phi : [" << phi << "]       theta : [" << theta << "]"<< std::endl<<std::endl; 
     }
-
 }
 
 
 void Sphere::render()
 {
-    ////// Debugging rotation /////
-    /* 
-    double theta = this->anim.getTheta(); // rad
-    double phi = this->anim.getPhi();     // rad
-
-    //conversion in cartesian
-    Vector s = Vector(sin(theta)*sin(phi), cos(theta), sin(theta)*cos(phi));
-
-    glPushMatrix();
-    glTranslated(this->anim.getPos().x, this->anim.getPos().y, this->anim.getPos().z);
-    glBegin(GL_LINES);
-    {
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0.5*s.x, 0.5*s.y, 0.5*s.z);
-
-
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(1, 0, 0);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 1, 0);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 0, 1);
-    }
-    glEnd();
-    glPopMatrix();
-    */
-
     GLUquadric *quad;
 
     quad = gluNewQuadric();
 
     Form::render(); // Position the form and assign its color
 
-    // Mise en route de la texture associee
+    // aplly texture
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture_id);
     gluQuadricTexture(quad, texture_id);
@@ -147,6 +105,6 @@ void Sphere::render()
 
     gluDeleteQuadric(quad);
 
-    // Ne plus appliquer la texture pour la suite
+    // remove texture
     glDisable(GL_TEXTURE_2D);
 }

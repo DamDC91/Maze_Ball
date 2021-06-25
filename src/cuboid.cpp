@@ -3,8 +3,6 @@
 #include "cube_face.h"
 #include "forms.h"
 
-#include <iostream>
-
 Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Color cl)
 {
     this->vdir1 = v1 * (1.0 / v1.norm());

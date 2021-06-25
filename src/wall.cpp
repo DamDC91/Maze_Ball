@@ -3,8 +3,6 @@
 #include "cube_face.h"
 #include "wall.h"
 
-#include <iostream>
-
 Wall::Wall(Point c_origin, Vector c_face_dir1, Vector c_face_dir2, Vector c_face_dir3, Color cl) :
         Cuboid::Cuboid(c_face_dir1, c_face_dir2, c_origin, c_face_dir1.norm(), c_face_dir2.norm(), c_face_dir3.norm(),
                        cl) {};

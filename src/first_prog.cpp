@@ -40,6 +40,8 @@ int main(int argc, char *args[])
         // Event handler
         SDL_Event event;
 
+        // Scene object declaration  
+
         // Camera position
         Point camera_position(0, 0.0, 8.0);
 
@@ -86,6 +88,8 @@ int main(int argc, char *args[])
         double off_z = -floor_width / 2;
         double off_y = floor_depth / 2;
         Vector u = Vector(floor_length / 5, wall_height, floor_width / 5);
+
+        // Labyrinth
 
         Wall *maze1 = new Wall(Point(0 * u.x + off_x, 0 * u.y + off_y, 1 * u.z + off_z),
                                Vector(1, 0, 0),
@@ -178,14 +182,9 @@ int main(int argc, char *args[])
 
         // Get first "current time"
         previous_time = SDL_GetTicks();
-        unsigned int time = SDL_GetTicks();
-        unsigned int last_time = 0;
         // While application is running
         while (!quit)
         {
-            time = SDL_GetTicks();
-            //  angle += 0.04;
-
             // Handle events on queue
             while (SDL_PollEvent(&event) != 0)
             {
@@ -250,12 +249,6 @@ int main(int argc, char *args[])
                 previous_time = current_time;
 
                 scene.update(1e-3 * elapsed_time); // International system units : seconds
-            }
-
-            if (1e-3 * time >= last_time + 1)
-            {
-                last_time = 1e-3 * time;
-                std::cout << last_time << " s" << std::endl;
             }
 
             // Render the scene

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CUBEFACE_H_INCLUDED
+#define CUBEFACE_H_INCLUDED
 
 #include "forms.h"
 #include "sphere.h"
@@ -29,3 +30,4 @@ public:
     bool collisionSphere(Sphere &sphere, Vector floor_normal);
 
 };
+#endif

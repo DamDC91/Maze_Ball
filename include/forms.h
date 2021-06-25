@@ -46,13 +46,13 @@ public:
     // It has to be done in each inherited class, otherwise all forms will have the same movements !
     // Virtual method for dynamic function call
     // Pure virtual to ensure all objects have their physics implemented
-    virtual void update(double delta_t) = 0;
+    virtual void update(double delta_t)=0;
 
     // Virtual method : Form is a generic type, only setting color and reference position
     virtual void render();
 
     virtual void setTexture(GLuint textureID) { this->texture_id = textureID; }
-    void setColor(Color color) { this->col = color; };
+    void setColor(Color color) { this->col = color; }
 };
 
 #endif // FORMS_H_INCLUDED

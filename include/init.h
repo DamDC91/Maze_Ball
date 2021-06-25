@@ -1,3 +1,6 @@
+#ifndef INIT_H_INCLUDED
+#define INIT_H_INCLUDED
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
@@ -30,3 +33,5 @@ void close(SDL_Window **window);
 
 //Loading texture
 void img2GLuint(GLuint &textureID, const char * imgFile);
+
+#endif

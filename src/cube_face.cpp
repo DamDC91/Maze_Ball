@@ -15,9 +15,7 @@ CubeFace::CubeFace(Vector v1, Vector v2, Point org, double l, double w, Color cl
 
 void CubeFace::update(double delta_t)
 {
-    // Complete this part
-    //  this->anim.setTheta(this->anim.getTheta() + 0.3);
-    //  this->anim.setPhi(this->anim.getPhi() + 0.3);
+    // Nothing to do here
 }
 
 void CubeFace::render()

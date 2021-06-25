@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPHERE_H_INCLUDED
+#define SPHERE_H_INCLUDED
 
 #include "forms.h"
 
@@ -24,3 +25,5 @@ public:
 
     void update(double delta_t, double alpha, double beta);
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FLOOR_H_INCLUDED
+#define FLOOR_H_INCLUDED
 
 #include "forms.h"
 #include "cube_face.h"
@@ -12,6 +13,6 @@ public:
 
     Floor(Point org, Vector v1, Vector v2, double l, double w, double d, Color cl) :
             Cuboid(v1, v2, org, l, w, d, cl) {};
-
-    // bool collisionSphere(Point sph_pos, double radius, Vector floor_normal); TODO
 };
+
+#endif
