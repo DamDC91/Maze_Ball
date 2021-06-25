@@ -15,4 +15,4 @@ public:
             Cuboid(v1, v2, org, l, w, d, cl) {};
 };
 
-#endif
+#endif //FLOOR_H_INCLUDED

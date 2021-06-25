@@ -1,7 +1,10 @@
-#include "GL/glu.h"
+#include <GL/glu.h>
+#include <iostream>
+
 #include "cuboid.h"
 #include "cube_face.h"
 #include "forms.h"
+
 
 Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Color cl)
 {
@@ -12,7 +15,7 @@ Cuboid::Cuboid(Vector v1, Vector v2, Point org, double l, double w, double d, Co
     this->width = w;
     this->depth = d;
 
-    this->origin = org;
+    this->anim.setPos(org);
     this->col = cl;
 
     Vector vdir3 = vdir1 ^vdir2;

@@ -13,9 +13,9 @@ private:
 
 public:
     explicit Animation(double ph = 0.0, double th = 0.0,
-              Vector accel = Vector(0.0, 0.0, 0.0),
-              Vector speed = Vector(0.0, 0.0, 0.0),
-              Point p = Point(0.0, 0.0, 0.0)
+                       Vector accel = Vector(0.0, 0.0, 0.0),
+                       Vector speed = Vector(0.0, 0.0, 0.0),
+                       Point p = Point(0.0, 0.0, 0.0)
     );
 
     double getPhi() const { return phi; }

@@ -5,7 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/glu.h>
+
 #include "forms.h"
+
 
 const int SCREEN_WIDTH = 640 * 2;
 const int SCREEN_HEIGHT = 480 * 2;
@@ -32,6 +34,6 @@ void render(Form *formlist[MAX_FORMS_NUMBER], const Point &cam_pos);
 void close(SDL_Window **window);
 
 //Loading texture
-void img2GLuint(GLuint &textureID, const char * imgFile);
+void img2GLuint(GLuint &textureID, const char *imgFile);
 
 #endif

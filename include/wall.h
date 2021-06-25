@@ -19,4 +19,4 @@ public:
     bool collisionSphere(Sphere &sphere, Vector const &floor_normal);
 };
 
-#endif
+#endif //WALL_H_INCLUDED

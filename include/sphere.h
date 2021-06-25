@@ -26,4 +26,4 @@ public:
     void update(double delta_t, double alpha, double beta);
 };
 
-#endif
+#endif //SPHERE_H_INCLUDED

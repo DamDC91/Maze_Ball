@@ -1,11 +1,12 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 
-#include <floor.h>
-#include <wall.h>
-#include <sphere.h>
 #include <utility>
 #include <vector>
+
+#include "floor.h"
+#include "wall.h"
+#include "sphere.h"
 
 
 class Scene
@@ -44,4 +45,4 @@ public:
 
 };
 
-#endif
+#endif//SCENE_H_INCLUDED

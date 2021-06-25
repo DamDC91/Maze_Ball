@@ -7,8 +7,6 @@
 class Cuboid : public Form
 {
 protected:
-    Point center;
-    Point origin;
     double length, width, depth;
     CubeFace *faces[6];
     Vector vdir1, vdir2;
@@ -25,8 +23,8 @@ public:
     };
 
     explicit Cuboid(Vector v1 = Vector(1, 0, 0), Vector v2 = Vector(0, 0, 1),
-           Point org = Point(), double l = 1.0, double w = 1.0, double d = 1.0,
-           Color cl = Color());
+                    Point org = Point(), double l = 1.0, double w = 1.0, double d = 1.0,
+                    Color cl = Color());
 
     void update(double delta_t) override;
 

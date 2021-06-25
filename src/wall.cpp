@@ -1,4 +1,3 @@
-#include "GL/glu.h"
 #include "cuboid.h"
 #include "cube_face.h"
 #include "wall.h"

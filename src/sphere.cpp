@@ -19,7 +19,7 @@ Sphere::Sphere(double r, Color cl) : Sphere(r, Point(), cl) {}
 void Sphere::update(double delta_t)
 {
     // Complete this part
-
+    update(delta_t, 0, 0);
 }
 
 void Sphere::update(double delta_t, double alpha, double beta)
@@ -77,8 +77,8 @@ void Sphere::update(double delta_t, double alpha, double beta)
         //conversion in spheric
         theta = acos(s.y);   
         phi = atan2(s.x,s.z);
-        if (phi < 0)
-            phi = phi + 2* M_PI;
+//        if (phi < 0)
+//            phi = phi + 2* M_PI;
 
         this->anim.setPhi(phi);
         this->anim.setTheta(theta);

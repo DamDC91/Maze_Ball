@@ -1,4 +1,5 @@
 #include <GL/glu.h>
+
 #include "sphere.h"
 #include "cube_face.h"
 

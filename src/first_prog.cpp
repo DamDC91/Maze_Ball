@@ -2,9 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <SDL2/SDL.h>
-//#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
-#include <GL/glu.h>
 
 #include "init.h"
 // Module for space geometry
@@ -159,10 +157,10 @@ int main(int argc, char *args[])
         // Texture //////////////////////////////////////////////////////////
         GLuint texMarble, texField, texGrey, texBackground;
         #ifdef __linux__
-            img2GLuint(texMarble, "../images/bille_2.jpg");
-            img2GLuint(texField, "../images/plateau_2.jpg");
-            img2GLuint(texGrey, "../images/gris.jpg");
-            img2GLuint(texBackground, "../images/fond.jpg");
+            img2GLuint(texMarble, "images/bille_2.jpg");
+            img2GLuint(texField, "images/plateau_2.jpg");
+            img2GLuint(texGrey, "images/gris.jpg");
+            img2GLuint(texBackground, "images/fond.jpg");
         #elif _WIN32
             img2GLuint(texMarble, "images\\bille_2.jpg");
             img2GLuint(texField, "images\\plateau_2.jpg");

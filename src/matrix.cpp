@@ -85,13 +85,11 @@ Vector rotate_z(Vector const &vec, double theta)
 
 Vector rotate_u(Vector const &vec, Vector const &u, double theta)
 {
-    std::cout << "rotating around " << u << " with an angle of " << theta << std::endl;
     double c = cos(theta);
     double s = sin(theta);
-    Matrix *R = new Matrix({ u.x*u.x*(1-c)+c,     u.x*u.y*(1-c)-u.z*s,  u.x*u.z*(1-c)+u.y*s,
-                             u.x*u.y*(1-c)+u.z*s, u.y*u.y*(1-c)+c,      u.y*u.z*(1-c)-u.x*s,
-                             u.x*u.z*(1-c)-u.y*s, u.y*u.z*(1-c)+u.x*s,  u.z*u.z*(1-c)+c     });
-    Vector r = (*R)*vec;
-    std::cout << vec << " -> " << r << std::endl;
+    Matrix *R = new Matrix({u.x * u.x * (1 - c) + c, u.x * u.y * (1 - c) - u.z * s, u.x * u.z * (1 - c) + u.y * s,
+                            u.x * u.y * (1 - c) + u.z * s, u.y * u.y * (1 - c) + c, u.y * u.z * (1 - c) - u.x * s,
+                            u.x * u.z * (1 - c) - u.y * s, u.y * u.z * (1 - c) + u.x * s, u.z * u.z * (1 - c) + c});
+    Vector r = (*R) * vec;
     return r;
 }
