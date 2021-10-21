@@ -7,6 +7,8 @@ We build a maze ball game which involve simulating the gravity.
 It is a playable game available on linux and windows (we does not have teste on macOS).
 Unfortunately the game as no end and some bugs remains without correction.
 
+demo
+
 ![demo](./media/demo.gif)
 
 
@@ -19,7 +21,7 @@ It was a group projet, which required a lot of collaboration beetween all partic
 
 That was my first group projet involving so many people.
 
-## Suggested improvement
+## Suggested improvements
 
 One of the main issue of this project was to make the ball spinning as it rolls.
 As you can see our implementation is not working.
