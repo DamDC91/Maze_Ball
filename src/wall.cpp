@@ -16,7 +16,7 @@ bool Wall::collisionSphere(Sphere &sphere, Vector const &floor_normal)
         {
             if (face->collisionSphere(sphere, floor_normal))
             {
-                face->setColor(GREEN);
+                //face->setColor(GREEN);
                 return true;
             }
         }

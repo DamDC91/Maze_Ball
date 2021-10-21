@@ -157,15 +157,15 @@ int main(int argc, char *args[])
         // Texture //////////////////////////////////////////////////////////
         GLuint texMarble, texField, texGrey, texBackground;
         #ifdef __linux__
-            img2GLuint(texMarble, "images/bille_2.jpg");
-            img2GLuint(texField, "images/plateau_2.jpg");
-            img2GLuint(texGrey, "images/gris.jpg");
-            img2GLuint(texBackground, "images/fond.jpg");
+            img2GLuint(texMarble, "media/bille_2.jpg");
+            img2GLuint(texField, "media/plateau_2.jpg");
+            img2GLuint(texGrey, "media/gris.jpg");
+            img2GLuint(texBackground, "media/fond.jpg");
         #elif _WIN32
-            img2GLuint(texMarble, "images\\bille_2.jpg");
-            img2GLuint(texField, "images\\plateau_2.jpg");
-            img2GLuint(texGrey, "images\\gris.jpg");
-            img2GLuint(texBackground, "images\\fond.jpg");
+            img2GLuint(texMarble, "media\\bille_2.jpg");
+            img2GLuint(texField, "media\\plateau_2.jpg");
+            img2GLuint(texGrey, "media\\gris.jpg");
+            img2GLuint(texBackground, "media\\fond.jpg");
         #endif
         // Textures ready to be enable (private member of each form) ///////
 
