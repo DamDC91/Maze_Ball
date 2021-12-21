@@ -4,7 +4,7 @@
 
 The purpose of this academic project was to build a 3D physic simulation using OpenGL and SDL.
 We build a maze ball game which involve simulating the gravity.
-It is a playable game available on linux and windows (we does not have teste on macOS).
+It is a playable game available on linux and windows (we have not tested on macOS).
 Unfortunately the game as no end and some bugs remains without correction.
 
 demo
